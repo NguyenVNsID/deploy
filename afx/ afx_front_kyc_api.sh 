@@ -1,0 +1,27 @@
+#!/bin/bash
+if [ `whoami` != "afx" ];
+then
+    echo "You must run this script by AFX user!!"
+    exit 0
+else
+
+DATE=`date +%Y%m%d_%H%M`
+DATE_2=`date +%Y%m%d`
+
+echo -e "\033[1;36m Backing up source code................................................................................................. \e[0m"
+cd /opt/deploy/01.KYC_FRONT_API && sudo mv kyc-api-front.jar kyc-api-front.jar.$DATE
+sudo mkdir -p /opt/backup/kyc_api_front/$DATE_2/
+sudo mv /opt/deploy/01.KYC_FRONT_API/kyc-api-front.jar.$DATE /opt/backup/kyc_api_front/$DATE_2/
+echo -e "\e[1;33m Backup kyc-api-front: Done.................................... \e[0m"
+sleep 1
+
+echo -e "\e[1;33m Deploy kyc-api-front: Begin................................... \e[0m"
+sudo cp /opt/newsource/kyc-api-front/$DATE_2/kyc-api-front.jar /opt/deploy/01.KYC_FRONT_API
+sudo chown -R afx:afx /opt/deploy/01.KYC_FRONT_API/*.jar
+sudo systemctl restart kyc-api-front.service
+sleep 10
+sudo systemctl status kyc-api-front.service
+sleep 1
+echo -e "\e[1;33m Deploy kyc-front: Done.................................... \e[0m"
+#echo -e "\e[1;33m MD5SUM: `md5sum /opt/newsource/kyc-api-front/$DATE_2/kyc-api-front.jar` \e[0m"
+fi

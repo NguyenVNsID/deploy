@@ -1,0 +1,43 @@
+#!/bin/bash
+if [ `whoami` != "afx" ];
+then
+    echo "You must run this script by AFX user!!"
+    exit 0
+else
+
+#read -sp 'nhap pass ssh: ' afx
+DATE=`date +%Y%m%d_%H%M`
+DATE_2=`date +%Y%m%d`
+
+echo -e "\033[1;36m DEPLOY kyc-api-front FOR api 1 - 10.8.8.13............................................................................. \e[0m"
+
+sshpass -p "$afx" ssh afx@10.8.8.13 mkdir -p /opt/newsource/kyc-api-front/$DATE_2/
+sleep 2
+sshpass -p "$afx" scp /opt/newsource/kyc-api-front/$DATE_2/kyc-api-front.jar afx@10.8.8.13:/opt/newsource/kyc-api-front/$DATE_2/
+sleep 2
+sshpass -p "$afx" ssh afx@10.8.8.13 sh /opt/deploy/aa.test-kyc-api-front.sh
+sleep 2
+
+echo -e "\033[1;36m DEPLOY kyc-api-front FOR api 2 - 10.8.10.13............................................................................ \e[0m"
+
+sshpass -p "$afx" ssh afx@10.8.10.13 mkdir -p /opt/newsource/kyc-api-front/$DATE_2/
+sleep 2
+sshpass -p "$afx" scp /opt/newsource/kyc-api-front/$DATE_2/kyc-api-front.jar afx@10.8.10.13:/opt/newsource/kyc-api-front/$DATE_2/
+sleep 2
+sshpass -p "$afx" ssh afx@10.8.10.13 sh /opt/deploy/aa.test-kyc-api-front.sh
+sleep 2
+echo -e "\033[1;36m ALL DEPLOY DONE.............................................................................................. \e[0m"
+
+fi
+
+
+
+
+
+
+
+
+
+sdfds
+
+

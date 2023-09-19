@@ -1,0 +1,84 @@
+#!/bin/bash
+#Script Check Run Batch
+#Created by: UyCN
+
+#Check user run cript
+if [ whoami != "afx" ];
+then
+    echo -e "\e[1;33m You must run this script by afx user \e[0m"
+    exit 0
+else
+
+#Setup ENV
+DATE=date +%Y%m%d_%H%M
+DATE_2=date +%Y%m%d
+DATE_0=date +%Y%m%d --date='1 days ago'
+num=ls -1 /home/afx/AFX/batch-report/storage/"$DATE_0" | wc -l
+num1=ls -1 /home/afx/COMMODITY/batch-report/storage/"$DATE_0" | wc -l
+num2=ls -1 /home/afx/INDEX/batch-report/storage/"$DATE_0" | wc -l
+di=/var/log/batch-all/afx-batch-all-logger.log
+di2=/var/log/batch-report/afx-batch-report-logger.log
+clo=cat "$di" | grep "Closed Market Successfully" | awk '{print $1, $2}'
+dat=sshpass -p "$afx" ssh afx@10.9.8.79 stat -c %y /opt/backup/db/prodphillipmt5_\`date +%Y%m%d_0551\.zip | awk '{print $1,$2}'`
+sleep 1
+#dat=cat "$di" | grep "Backup Database successfully" | awk '{print $1, $2}'
+acc=cat "$di" | grep "Backup mt5_accounts eod data successfully" | awk '{print $1, $2}'
+pos=cat "$di" | grep "Backup mt5_positions eod data successfully" | awk '{print $1, $2}'
+pri=cat "$di" | grep "Backup mt5_prices eod data successfully" | awk '{print $1, $2}'
+ord=cat "$di" | grep "Backup mt5_orders eod data successfully" | awk '{print $1, $2}'
+ope=cat "$di" | grep "Opened Market Successfully" | awk '{print $1, $2}'
+#rep=cat "$di" | grep "Batch Report started" | awk '{print $1, $2}'
+bus=cat "$di" | grep "Business Date" | awk '{print $1, $2}'
+nes=cat "$di" | grep "Business Date" | awk '{print $9, $10, $11}'
+RP001=cat "$di2" | grep -q "Generate RP001 DailyCustomerStatement PDF Successfully" && echo "Generate OK" || echo "ERROR"
+RP011=cat "$di2" | grep -q "Generate RP011 AccountJournal CSV Successfully" && echo "Generate OK" || echo "ERROR"
+RP012CSV=cat "$di2" | grep -q "Generate RP012 OrderHistory CSV Successfully" && echo "Generate OK" || echo "ERROR"
+RP012PDF=cat "$di2" | grep -q "Generate RP012 OrderHistory PDF Successfully" && echo "Generate OK" || echo "ERROR"
+RP013CSV=cat "$di2" | grep -q "Generate RP013 AccountEquity CSV Successfully" && echo "Generate OK" || echo "ERROR"
+RP013PDF=cat "$di2" | grep -q "Generate RP013 AccountEquity PDF Successfully" && echo "Generate OK" || echo "ERROR"
+RP014PDF=cat "$di2" | grep -q "Generate RP014 CustomerTradeJournal PDF Successfully" && echo "Generate OK" || echo "ERROR"
+RP014EXCEL=cat "$di2" | grep -q "Generate RP014 CustomerTradeJournal Excel(xlsx) Successfully" && echo "Generate OK" || echo "ERROR"
+RP016=cat "$di2" | grep -q "Generate RP016 Business report CSV Successfully" && echo "Generate OK" || echo "ERROR"
+RP017=cat "$di2" | grep -q "Generate RP017 Association Successfully" && echo "Generate OK" || echo "ERROR"
+RP018CSV=cat "$di2" | grep -q "Generate RP018 PositionReport CSV Successfully" && echo "Generate OK" || echo "ERROR"
+RP018FTP=cat "$di2" | grep -q "Connected FTP server successfully RP018" && echo "Connected FTP server successfully" || echo "ERROR"
+RP101=cat "$di2" | grep -q "Generate RP101 EOD PositionReport CSV Successfully for reportDate..." && echo "Generate OK" || echo "ERROR"
+RP102=cat "$di2" | grep -q "Generate RP102 EOD RateReport CSV Successfully for reportDate..." && echo "Generate OK" || echo "ERROR"
+RP103=cat "$di2" | grep -q "Generate RP103 EOD TradingReport CSV Successfully for reportDate..." && echo "Generate OK" || echo "ERROR"
+#RP220=cat "$di2" | grep -q "Generate HD220 Daily Data CSV Successfully" && echo "Generate OK" || echo "ERROR"
+sleep 1
+
+TDT OM, [8/26/2023 4:20 AM]
+echo -e "\e[1;33m Dear All, \e[0m"
+echo -e "\e[1;33m Om Team Inform Run Batch \e[0m"
+echo -e "\e[1;33m - Start Run Batch At: "$bus" \e[0m"
+echo -e "\e[1;33m - Closed Market Successfully At: "$clo" \e[0m"
+echo -e "\e[1;33m - Backup Database successfully At: "$dat" \e[0m"
+echo -e "\e[1;33m - Backup mt5_accounts eod data successfully At: "$acc" \e[0m"
+echo -e "\e[1;33m - Backup mt5_positions eod data successfully At: "$pos" \e[0m"
+echo -e "\e[1;33m - Backup mt5_prices eod data successfully At: "$pri" \e[0m"
+echo -e "\e[1;33m - Backup mt5_orders eod data successfully At: "$ord" \e[0m"
+echo -e "\e[1;33m - Opened Market Successfully At: "$ope" \e[0m"
+#echo -e "\e[1;33m - Batch Report started At: "$rep" \e[0m"
+echo -e "\e[1;33m - AFX START Batch Business Date At: "$nes" \e[0m"
+echo -e "\e[1;33m - "$num" file PDF, CSV  of FX, B2B_FX have export\e[0m"
+echo -e "\e[1;33m - "$num1" file PDF, CSV of COMMODITY have export\e[0m"
+echo -e "\e[1;33m - "$num2" file PDF, CSV of INDEX have export\e[0m"
+echo -e "\e[1;33m - RP001: "$RP001" \e[0m"
+echo -e "\e[1;33m - RP011: "$RP011" \e[0m"
+echo -e "\e[1;33m - RP012 CSV: "$RP012CSV" \e[0m"
+echo -e "\e[1;33m - RP012 PDF: "$RP012PDF" \e[0m"
+echo -e "\e[1;33m - RP013 CSV: "$RP013CSV" \e[0m"
+echo -e "\e[1;33m - RP013 PDF: "$RP013PDF" \e[0m"
+echo -e "\e[1;33m - RP014 PDF: "$RP014PDF" \e[0m"
+echo -e "\e[1;33m - RP014 EXCEL: "$RP014EXCEL" \e[0m"
+echo -e "\e[1;33m - RP016: "$RP016" \e[0m"
+echo -e "\e[1;33m - RP017: "$RP017" \e[0m"
+echo -e "\e[1;33m - RP018 CSV: "$RP018CSV" \e[0m"
+echo -e "\e[1;33m - RP018 FTP: "$RP018FTP" \e[0m"
+echo -e "\e[1;33m - RP101: "$RP101" \e[0m"
+echo -e "\e[1;33m - RP102: "$RP102" \e[0m"
+echo -e "\e[1;33m - RP103: "$RP103" \e[0m"
+#echo -e "\e[1;33m - RP220: "$RP220" \e[0m"
+echo -e "\e[1;33m Kindly be informed ! \e[0m"
+fi
