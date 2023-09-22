@@ -201,25 +201,11 @@ else
 
 # echo "pretreatment for brave: done"
 
-# INSTALL ALL APP
-# $APTU
+# FOR CLIENT
+flatpak-i com.brave.Browser com.spotify.Client org.flameshot.Flameshot org.libreoffice.LibreOffice com.google.Chrome org.videolan.VLC
+snap-i docker code
+apt-i tmux vim curl ibus-unikey git snapd curl net-tools openssh-server xz-utils at sshpass python3-pip ncdu solaar gnome-tweaks (use to when close screen, computer still run)
+app image: VirtualBox
 
-# $APTI tmux vim curl ibus-unikey git snapd gh curl flameshot net-tools openssh-server xz-utils at sshpass libreoffice python3-pip brave-browser spotify-client gnome-tweaks (use to when close screen, computer still run)
-
-DA TUY CHINH VOI BOI CANH DUNG FLATPAK
-# FLATHUB
-flatpak install flathub com.brave.Browser com.spotify.Client org.vim.Vim org.flameshot.Flameshot org.libreoffice.LibreOffice com.google.Chrome org.videolan.VLC
-
-# INSTALL AFTER DOWNLOAD
-VirtualBox
-
-# - curl tmux ibus-unikey git net-tools openssh-server at sshpass python3-pip ncdu
-
-
-
-# TOOLS FOR SERVER
-vim tmux htop 
-
-# CENTOS
-tmux
-
+# FOR SERVER
+vim tmux htop docker curl git curl net-tools openssh-server xz-utils at sshpass python3-pip ncdu
