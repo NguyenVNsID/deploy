@@ -142,25 +142,8 @@ else
 
 # $(which rsync) $rsync_opt $1 $2/current >> backup_$current_date.log
 
-
-# -------------------------------------------------------------------------------------
-# PREPROCESS
-# sudo apt update -y
-# sudo add-apt-repository ppa:appimagelaunche
-# sudo apt update -y
-
-
-
 # APT
 # - curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
-
-# - with deb: ferdium
-
-# - apti curl tmux vim ibus-unikey git snapd gh curl flameshot net-tools openssh-server xz-utils at sshpass libreoffice python3-pip solaar ncdu appimagelauncher
-
-# code virtualbox-7.0 spotify-client
-
-# manual: code, spotify, brave
 
 # APPIMAGE
 # - balenaEtcher
@@ -174,38 +157,15 @@ else
 # - save files script at the path `usr/local/bin`
 
 
-# - update && upgrade
-# - download file alias and save at folder user >>> push content of alias into .bashrc file
-# - tmux: download file config from github and save at user folder
-# - spotify: curl -sS https://download.spotify.com/debian/pubkey_7A3A762FAFD4A51F.gpg | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/spotify.gpg
-# echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list && sudo apt update -y && sudo apt install -y spotify-client
-# ##
 
 
-# SCRIPT
-# sudo apt update -y && sudo apt upgrade -y
-# sudo apt install 
-
-
-# SPOTIFY
-# curl -sS https://download.spotify.com/debian/pubkey_7A3A762FAFD4A51F.gpg | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/spotify.gpg
-
-# echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
-
-# echo "pretreatment for spotify: done"
-
-# BRAVE
-# sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
-
-# echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main"|sudo tee /etc/apt/sources.list.d/brave-browser-release.list
-
-# echo "pretreatment for brave: done"
 
 # FOR CLIENT
-flatpak-i com.brave.Browser com.spotify.Client org.flameshot.Flameshot org.libreoffice.LibreOffice com.google.Chrome org.videolan.VLC
-snap-i docker code codium
-apt-i tmux vim curl ibus-unikey git snapd curl net-tools openssh-server xz-utils at sshpass python3-pip ncdu solaar gnome-tweaks (use to when close screen, computer still run)
+flatpak-i com.brave.Browser com.spotify.Client org.flameshot.Flameshot org.libreoffice.LibreOffice com.google.Chrome org.videolan.VLC org.ferdium.Ferdium
+snap-i code --classic
+apt-i tmux vim ibus-unikey git snapd curl net-tools openssh-server xz-utils at sshpass python3-pip ncdu solaar gnome-tweaks (use to when close screen, computer still run)
 app image: VirtualBox
+root: docker
 
 # FOR SERVER
-vim tmux htop docker curl git curl net-tools openssh-server xz-utils at sshpass python3-pip ncdu
+vim tmux htop docker git curl net-tools openssh-server xz-utils at sshpass python3-pip ncdu
