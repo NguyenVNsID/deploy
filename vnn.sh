@@ -162,8 +162,8 @@ else
 
 # FOR CLIENT
 flatpak-i com.brave.Browser com.spotify.Client org.flameshot.Flameshot org.libreoffice.LibreOffice com.google.Chrome org.videolan.VLC org.ferdium.Ferdium io.dbeaver.DBeaverCommunity
-snap-i code --classic
-apt-i tmux vim ibus-unikey git snapd curl net-tools openssh-server xz-utils at sshpass python3-pip ncdu solaar gnome-tweaks (use to when close screen, computer still run)
+snap-i curl code --classic
+apt-i tmux vim ibus-unikey git snapd net-tools openssh-server xz-utils at sshpass python3-pip ncdu solaar gnome-tweaks (use to when close screen, computer still run)
 app image: VirtualBox
 root: docker
 
