@@ -1,5 +1,14 @@
 #!/bin/bash
-#CHECK CONNECTION TO THE INTERNET OR SERVER LOCAL
+
+# SET ENVIRONMENT VARIABLE
+GREEN="\e[32m"
+RED="\e[31m"
+YELLOW="\e[33m"
+END_COLOR="\e[0m"
+
+# ARE YOU SETUP FOR DESKTOP OR SERVER?
+
+# CHECK CONNECTION TO THE INTERNET OR SERVER LOCAL
 PING="www.google.com"
 
 echo "---> CHECKING INTERNET CONNECTION...."
@@ -15,8 +24,7 @@ fi
 
 # COMFIRM SETUP AFTER CHOOSE "Y" OR "N"
 while read -p "---> DO YOU WANT TO CONTINUE RUN THIS SCRIPT? (Y or N): " choose; do
-
-    if [ "$choose" == "y" ] || [ "$choose" == "Y" ];then
+    if [ "$choose" == "y" ] || [ "$choose" == "Y" ]; then
         number=4
         while [ "$number" -ge 0 ]; do
             echo -ne "\rSYSTEM WILL SETUP AFTER $number SECONDS. "
@@ -33,42 +41,18 @@ while read -p "---> DO YOU WANT TO CONTINUE RUN THIS SCRIPT? (Y or N): " choose;
         echo "---> PLEASE TYPE \"Y\" OR \"N\""
         continue
     fi
-
 done
 
 # CHECK SYSTEM TO CHOOSE PACKAGE MANAGEMENT
 release_file=/etc/os-release
 
 
-# CODE OF CQTDT ASIA
-# SETUP ENV FOR GLOBAL
-TIME_0=`date +Y%m%d`
-TIME_1=`date +Y%m%d_%H%M%S`
-
-
-
 # CHECK USER CAN RUN SCRIPT
-if [ `whoami` != "UserName" ]; then
-    echo -e "\e[1;33m YOU MUST RUN THIS SCRIPT BY UserName USER \e[0m"
-    exit 0 ---> cho nay nghi la phai exit 1 thi phai
+USERNAME=""
+if [ `whoami` != $USERNAME ]; then
+    echo -e "$RED YOU MUST RUN THIS SCRIPT BY $USERNAME USER $END_COLOR"
+    exit 1
 else
-
-
-
-
-# number=10
-
-# echo "Countdown starting..."
-
-# while [ "$number" -ge 0 ]; do
-#     echo -ne "\rSYSTEM WILL SETUP AFTER $number SECONDS. "
-#     sleep 1
-#     ((number--))
-# done
-
-# echo -e "\nSystem setup complete!"
-
-
 
 
 
