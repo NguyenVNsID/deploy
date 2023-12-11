@@ -23,8 +23,8 @@ sum_source=""
 sum_new_source=""
 
 # GROUP & USER
-USER="ubuntu"
-GROUP="ubuntu"
+USER="linux"
+GROUP="linux"
 
 # FUNCTION TO GET NUMBER LINE, WHERE THE COMMAND ERROR OCCURS
 cli_error() {

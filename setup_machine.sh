@@ -1,31 +1,3 @@
-
-
-
-
-#!/bin/bash
-
-# SET ENVIRONMENT VARIABLE
-GREEN="\e[32m"
-RED="\e[31m"
-YELLOW="\e[33m"
-END_COLOR="\e[0m"
-
-# ARE YOU SETUP FOR DESKTOP OR SERVER?
-
-# CHECK CONNECTION TO THE INTERNET OR SERVER LOCAL
-PING="www.google.com"
-
-echo "---> CHECKING INTERNET CONNECTION...."
-
-if ping -c 1 "$PING" &> /dev/null; then
-    sleep 1
-    echo "---> INTERNET CONNECTION: OK"
-else
-    echo "---> INTERNET CONNECTION: NG"
-    echo "---> PLEASE CHECK ON THIS SYSTEM!"
-    exit 1
-fi
-
 # COMFIRM SETUP AFTER CHOOSE "Y" OR "N"
 while read -p "---> DO YOU WANT TO CONTINUE RUN THIS SCRIPT? (Y or N): " choose; do
     if [ "$choose" == "y" ] || [ "$choose" == "Y" ]; then
@@ -47,10 +19,6 @@ while read -p "---> DO YOU WANT TO CONTINUE RUN THIS SCRIPT? (Y or N): " choose;
     fi
 done
 
-# CHECK SYSTEM TO CHOOSE PACKAGE MANAGEMENT
-release_file=/etc/os-release
-
-
 # CHECK USER CAN RUN SCRIPT
 USERNAME=""
 if [ `whoami` != $USERNAME ]; then
@@ -60,7 +28,7 @@ else
 
 
 
-# release_file=/etc/os-release
+# 
 # ok_logs=/var/log/my_system_logs/ok.log
 # error_logs=/var/log/my_system_logs/error.log
 
@@ -70,12 +38,12 @@ else
 #     fi
 # }
 
-# if grep -q "Arch" $release_file; then
+# if grep -q "Arch" $
 #     sudo pacman -Syu 1>> $ok_logs 2>> $error_logs
 #     check_exit_status
 # fi
 
-# if grep -q "Pop" $release_file || grep -q "Ubuntu" $release_file
+# if grep -q "Pop" $
 #     then
 #     sudo apt update -y 1>> $ok_logs 2>> $error_logs
 #     check_exit_status
