@@ -1,3 +1,7 @@
+
+
+
+
 #!/bin/bash
 
 # SET ENVIRONMENT VARIABLE
