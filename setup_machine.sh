@@ -19,38 +19,9 @@ while read -p "---> DO YOU WANT TO CONTINUE RUN THIS SCRIPT? (Y or N): " choose;
     fi
 done
 
-# CHECK USER CAN RUN SCRIPT
-USERNAME=""
-if [ `whoami` != $USERNAME ]; then
-    echo -e "$RED YOU MUST RUN THIS SCRIPT BY $USERNAME USER $END_COLOR"
-    exit 1
-else
 
 
 
-# 
-# ok_logs=/var/log/my_system_logs/ok.log
-# error_logs=/var/log/my_system_logs/error.log
-
-# check_exit_status() {
-#     if [ $? -ne 0 ]; then
-#         echo "PLEASE CHECK <---$error_logs---> FILE!"
-#     fi
-# }
-
-# if grep -q "Arch" $
-#     sudo pacman -Syu 1>> $ok_logs 2>> $error_logs
-#     check_exit_status
-# fi
-
-# if grep -q "Pop" $
-#     then
-#     sudo apt update -y 1>> $ok_logs 2>> $error_logs
-#     check_exit_status
-
-#     sudo apt dist-upgrade -y 1>> $ok_logs 2>> $error_logs
-#     check_exit_status
-# fi
 
 
 # <--- case --->
