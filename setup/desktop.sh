@@ -124,23 +124,9 @@ fi
 # fi
 
 
-
-
-
-
-
-
-
-
-
 # # Use sudo with -S option to read the password from standard input
 # echo "---> RUNNING COMMAND$GREEN sudo apt update -y$END_COLOR"
 # eval "$PASSWORD sudo -S apt update -y >> /dev/null"
-
-
-
-
-
 
 
 # # MAKE UBUNTU FASTER
