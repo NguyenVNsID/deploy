@@ -1,13 +1,11 @@
-PASSWORD='echo "$password" |'
-echo -n "Enter your password: "
-stty -echo
-read password
-stty echo
-echo    # this is just for a newline after entering the password
+#!/bin/bash
 
-# Use sudo with -S option to read the password from standard input
-echo "---> RUNNING COMMAND$GREEN sudo apt update -y$END_COLOR"
-eval "$PASSWORD sudo -S apt update -y >> /dev/null"
+# Prompt user for password and store it securely
+read -s -p "ENTER YOUR PASSWORD: " password
+echo
 
-echo "---> RUNNING COMMAND$GREEN sudo apt upgrade -y$END_COLOR"
-eval "$PASSWORD sudo -S apt upgrade -y >> /dev/null"
+# Your sudo commands go here
+echo "$password" | sudo -S apt-get update -y
+echo "$password" | sudo -S apt-get upgrade -y
+
+# Additional commands as needed
