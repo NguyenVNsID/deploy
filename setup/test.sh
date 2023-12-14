@@ -1,11 +1,17 @@
 #!/bin/bash
 
-# Prompt user for password and store it securely
-read -s -p "ENTER YOUR PASSWORD: " password
-echo
+package_name="ibus-unikey"
 
-# Your sudo commands go here
-echo "$password" | sudo -S apt-get update -y
-echo "$password" | sudo -S apt-get upgrade -y
+# if dpkg -l | grep -q "^ii.*$package_name" ; then
+#     echo "$package_name is installed."
+# else
+#     echo "$package_name is not installed."
+# fi
 
-# Additional commands as needed
+for app in "tmux" "ibus-unikey" "solaar" "gnome-tweaks"; do
+    if apt list --installed | grep -q "^$app/" ; then
+        echo "$app is installed."
+    else
+        echo "$app is not installed."
+    fi
+done

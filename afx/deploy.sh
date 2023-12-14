@@ -24,7 +24,6 @@ modules=(
 
 # DEFINE FUNCTION
 deploy_new_source() {
-
     while true; do
         read -p "PLEASE CHOOSE ITEM YOU WANT TO DEPLOY (ITEM: 00, 01, 02, ...): " input
         if [[ "$input" =~ ^[0-9]{2}$ ]]; then
