@@ -1,3 +1,4 @@
 1 kiểm tra người dùng có nằm trong sudoers file không?
     1.0 nếu có > chạy các câu lệnh tiếp theo
     1.1 nếu không > chạy su root > nhập pass > chạy sudo visudo hoặc sudo EDITOR=vim visudo > thiết lập cho user & group
+
