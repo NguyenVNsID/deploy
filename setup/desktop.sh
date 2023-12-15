@@ -56,12 +56,13 @@ deploy_for_os_using_apt () {
     # NOTE: gnome-tweaks (use to when close screen, computer still run)
     apps='
         git
-        tmux
-        ibus-unikey
-        solaar
-        gnome-tweaks
         snap
+        tmux
+        solaar
+        ibus-unikey
+        gnome-tweaks
         flatpak
+        gnome-software-plugin-flatpak
     '
     
     for app in $apps; do
@@ -79,12 +80,13 @@ deploy_for_os_using_apt () {
 }
 
 # install snap app use --classic flag
-install_snap_app_use_flag () {
+deploy_snap_app_use_flag () {
     echo "---> RUNNING COMMAND: $GREEN sudo snap install $app --classic $END_COLOR"
     eval "echo $PASSWORD sudo -S snap install $app --classic 1>> $DIRECTORY_LOG/$FILE_OK 2>> $DIRECTORY_LOG/$FILE_ERROR"
     check_exit_code_status
 }
 
+# install apps from snap
 deploy_apps_from_snap () {
     # NOTE: app use flag --classic: nvim, code
     # TIPS: applications that use flag --classic, should be put at the top inside the array to increase performance
@@ -103,9 +105,9 @@ deploy_apps_from_snap () {
             echo "$YELLOW THE $app IS NOT INSTALLED.$END_COLOR"
             
             if [ "$app" = "nvim" ]; then
-                install_snap_app_use_flag
+                deploy_snap_app_use_flag
             elif [ "$app" = "code" ]; then
-                install_snap_app_use_flag
+                deploy_snap_app_use_flag
             else
                 echo "---> RUNNING COMMAND: $GREEN sudo snap install $app $END_COLOR"
                 eval "echo $PASSWORD sudo -S snap install $app 1>> $DIRECTORY_LOG/$FILE_OK 2>> $DIRECTORY_LOG/$FILE_ERROR"
@@ -115,26 +117,34 @@ deploy_apps_from_snap () {
     done
 }
 
+# install apps from flathub
 deploy_apps_from_flathub () {
-    # 
     apps='
-        "com.brave.Browser"
-        "com.spotify.Client"
-        "org.flameshot.Flameshot"
-        "org.libreoffice.LibreOffice"
-        "com.google.Chrome"
-        "org.videolan.VLC"
-        "org.ferdium.Ferdium"
-        "io.dbeaver.DBeaverCommunity"
-        "com.github.unrud.VideoDownloader"
+        com.brave.Browser
+        com.spotify.Client
+        org.flameshot.Flameshot
+        org.libreoffice.LibreOffice
+        com.google.Chrome
+        org.videolan.VLC
+        org.ferdium.Ferdium
+        io.dbeaver.DBeaverCommunity
+        com.github.unrud.VideoDownloader
     '
-    
+
+    flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+
     for app in $apps; do
-    eval "echo $PASSWORD sudo -S "
+        echo "---> CHECKING $app EXISTS ON THE SYSTEM OR NOT?"
+
+        if flatpak list | grep -q "$app"; then
+            echo "$GREEN THE $app IS INSTALLED.$END_COLOR"
+        else
+            echo "---> RUNNING COMMAND: $GREEN sudo -S flatpak install flathub -y $app $END_COLOR"
+            eval "echo $PASSWORD sudo -S flatpak install flathub -y $app 1>> $DIRECTORY_LOG/$FILE_OK 2>> $DIRECTORY_LOG/$FILE_ERROR"
+            check_exit_code_status
+        fi
     done
 }
-
-# vnn1489
 
 # deploy_apps_from_official () {
     
@@ -185,6 +195,7 @@ for distro in $distros; do
     if grep -q -e "$distro" "$FILE_RELEASE_INFO"; then
         deploy_for_os_using_apt
         deploy_apps_from_snap
+        deploy_apps_from_flathub
         break
     else
         echo "$RED NOT FOUND $distro INSIDE $FILE_RELEASE_INFO $END_COLOR"
