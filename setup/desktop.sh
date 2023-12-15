@@ -10,7 +10,7 @@ END_COLOR="\e[0m"
 # user & group
 USER="linux"
 GROUP="linux"
-PASSWORD='echo "$INPUT_PASS" |'
+PASSWORD='echo $INPUT_PASS'
 
 # file & directory
 DIRECTORY=nnn1489 # option
@@ -36,7 +36,7 @@ check_exit_code_status() {
 }
 
 # deploy for os is debian or based-on debian
-deploy_for_os_using_apt () {
+deploy_software_use_apt () {
     echo "---> DEPLOYING WITH APT PACKAGE MANAGEMENT"
 
     options='
@@ -48,7 +48,7 @@ deploy_for_os_using_apt () {
 
     for option in $options; do
         echo "---> RUNNING COMMAND: $GREEN sudo apt $option -y $END_COLOR"
-        eval "$PASSWORD sudo -S apt $option -y 1>> $DIRECTORY_LOG/$FILE_OK 2>> $DIRECTORY_LOG/$FILE_ERROR"
+        eval "$PASSWORD | sudo -S apt $option -y 1>> $DIRECTORY_LOG/$FILE_OK 2>> $DIRECTORY_LOG/$FILE_ERROR"
         check_exit_code_status
     done
 
@@ -73,21 +73,21 @@ deploy_for_os_using_apt () {
         else
             echo "$YELLOW THE $app IS NOT INSTALLED.$END_COLOR"
             echo "---> RUNNING COMMAND: $GREEN sudo apt install -y $app $END_COLOR"
-            eval "echo $PASSWORD sudo -S apt install -y $app 1>> $DIRECTORY_LOG/$FILE_OK 2>> $DIRECTORY_LOG/$FILE_ERROR"
+            eval "$PASSWORD | sudo -S apt install -y $app 1>> $DIRECTORY_LOG/$FILE_OK 2>> $DIRECTORY_LOG/$FILE_ERROR"
             check_exit_code_status
         fi
     done
 }
 
 # install snap app use --classic flag
-deploy_snap_app_use_flag () {
+deploy_software_use_flag_option () {
     echo "---> RUNNING COMMAND: $GREEN sudo snap install $app --classic $END_COLOR"
-    eval "echo $PASSWORD sudo -S snap install $app --classic 1>> $DIRECTORY_LOG/$FILE_OK 2>> $DIRECTORY_LOG/$FILE_ERROR"
+    eval "$PASSWORD | sudo -S snap install $app --classic 1>> $DIRECTORY_LOG/$FILE_OK 2>> $DIRECTORY_LOG/$FILE_ERROR"
     check_exit_code_status
 }
 
 # install apps from snap
-deploy_apps_from_snap () {
+deploy_software_use_snap () {
     # NOTE: app use flag --classic: nvim, code
     # TIPS: applications that use flag --classic, should be put at the top inside the array to increase performance
     apps='
@@ -105,12 +105,12 @@ deploy_apps_from_snap () {
             echo "$YELLOW THE $app IS NOT INSTALLED.$END_COLOR"
             
             if [ "$app" = "nvim" ]; then
-                deploy_snap_app_use_flag
+                deploy_software_use_flag_option
             elif [ "$app" = "code" ]; then
-                deploy_snap_app_use_flag
+                deploy_software_use_flag_option
             else
                 echo "---> RUNNING COMMAND: $GREEN sudo snap install $app $END_COLOR"
-                eval "echo $PASSWORD sudo -S snap install $app 1>> $DIRECTORY_LOG/$FILE_OK 2>> $DIRECTORY_LOG/$FILE_ERROR"
+                eval "$PASSWORD | sudo -S snap install $app 1>> $DIRECTORY_LOG/$FILE_OK 2>> $DIRECTORY_LOG/$FILE_ERROR"
                 check_exit_code_status
             fi    
         fi
@@ -118,7 +118,7 @@ deploy_apps_from_snap () {
 }
 
 # install apps from flathub
-deploy_apps_from_flathub () {
+deploy_software_use_flathub () {
     apps='
         com.brave.Browser
         com.spotify.Client
@@ -140,7 +140,7 @@ deploy_apps_from_flathub () {
             echo "$GREEN THE $app IS INSTALLED.$END_COLOR"
         else
             echo "---> RUNNING COMMAND: $GREEN sudo -S flatpak install flathub -y $app $END_COLOR"
-            eval "echo $PASSWORD sudo -S flatpak install flathub -y $app 1>> $DIRECTORY_LOG/$FILE_OK 2>> $DIRECTORY_LOG/$FILE_ERROR"
+            eval "$PASSWORD | sudo -S flatpak install flathub -y $app 1>> $DIRECTORY_LOG/$FILE_OK 2>> $DIRECTORY_LOG/$FILE_ERROR"
             check_exit_code_status
         fi
     done
@@ -162,7 +162,7 @@ echo    # newline
 
 # create new directory inside user directory (option)
 echo "---> CREATING $DIRECTORY DIRECTORY INSIDE /home/$USER...."
-eval "$PASSWORD sudo -S mkdir -p /home/$USER/$DIRECTORY"
+eval "$PASSWORD | sudo -S mkdir -p /home/$USER/$DIRECTORY"
 echo "$GREEN CREATED $DIRECTORY DIRECTORY INSIDE /home/$USER $END_COLOR."
 
 # checking network
@@ -178,9 +178,9 @@ else
 fi
 
 # create file to write log ok, log error message during installation
-eval "$PASSWORD sudo -S mkdir -p $DIRECTORY_LOG"
-eval "$PASSWORD sudo -S touch $DIRECTORY_LOG/$FILE_OK $DIRECTORY_LOG/$FILE_ERROR"
-eval "$PASSWORD sudo -S chown -R $USER:$GROUP $DIRECTORY_LOG"
+eval "$PASSWORD | sudo -S mkdir -p $DIRECTORY_LOG"
+eval "$PASSWORD | sudo -S touch $DIRECTORY_LOG/$FILE_OK $DIRECTORY_LOG/$FILE_ERROR"
+eval "$PASSWORD | sudo -S chown -R $USER:$GROUP $DIRECTORY_LOG"
 
 # check distrobution info to select package management to deploy
 echo "---> CHECKING PACKAGE MANAGEMENT TO DEPLOY FROM $FILE_RELEASE_INFO...."
@@ -193,25 +193,15 @@ distros='
 
 for distro in $distros; do
     if grep -q -e "$distro" "$FILE_RELEASE_INFO"; then
-        deploy_for_os_using_apt
-        deploy_apps_from_snap
-        deploy_apps_from_flathub
+        deploy_software_use_apt
+        deploy_software_use_snap
+        deploy_software_use_flathub
         break
     else
         echo "$RED NOT FOUND $distro INSIDE $FILE_RELEASE_INFO $END_COLOR"
         # exit 1
     fi
 done
-
-
-# if grep -q -e "${distributions[@]}" "$FILE_RELEASE_INFO"; then
-#     echo "---> RUNNING COMMAND: $GREEN sudo apt update -y $END_COLOR"
-#     eval "$PASSWORD sudo -S apt update -y 1>> $FILE_NULL 2>> $DIRECTORY_LOG/$FILE_ERROR"
-#     check_exit_code_status
-# else
-#     echo "$RED NOT FOUND in (${distributions[@]}) INSIDE $FILE_RELEASE_INFO $END_COLOR"
-#     exit 1
-# fi
 
 # # MAKE UBUNTU FASTER
 # # remove language-related ign from apt update
