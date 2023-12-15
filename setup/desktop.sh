@@ -37,22 +37,40 @@ check_exit_code_status() {
 
 # deploy for os is debian or based-on debian
 deploy_for_os_using_apt () {
-    echo "DEPLOYING WITH APT PACKAGE MANAGEMENT"
+    echo "---> DEPLOYING WITH APT PACKAGE MANAGEMENT"
 
-    for option in "update" "upgrade" "dist-upgrade" "autoremove"; do
+    options='
+        update
+        upgrade
+        dist-upgrade
+        autoremove
+    '
+
+    for option in $options; do
         echo "---> RUNNING COMMAND: $GREEN sudo apt $option -y $END_COLOR"
         eval "$PASSWORD sudo -S apt $option -y 1>> $DIRECTORY_LOG/$FILE_OK 2>> $DIRECTORY_LOG/$FILE_ERROR"
         check_exit_code_status
     done
 
-    # tmux vim ibus-unikey git snapd net-tools openssh-server xz-utils at sshpass python3-pip ncdu solaar gnome-tweaks (use to when close screen, computer still run)
-    for app in "tmux" "ibus-unikey" "solaar" "gnome-tweaks"; do
+    # vim net-tools openssh-server xz-utils at sshpass python3-pip ncdu 
+    # NOTE: gnome-tweaks (use to when close screen, computer still run)
+    apps='
+        git
+        tmux
+        ibus-unikey
+        solaar
+        gnome-tweaks
+        snap
+        flatpak
+    '
+    
+    for app in $apps; do
         echo "---> CHECKING $app EXISTS ON THE SYSTEM OR NOT?"
 
         if apt list --installed | grep -q "^$app/"; then
             echo "$GREEN THE $app IS INSTALLED.$END_COLOR"
         else
-            echo "THE$YELLOW $app $END_COLOR IS NOT INSTALLED."
+            echo "$YELLOW THE $app IS NOT INSTALLED.$END_COLOR"
             echo "---> RUNNING COMMAND: $GREEN sudo apt install -y $app $END_COLOR"
             eval "echo $PASSWORD sudo -S apt install -y $app 1>> $DIRECTORY_LOG/$FILE_OK 2>> $DIRECTORY_LOG/$FILE_ERROR"
             check_exit_code_status
@@ -60,13 +78,63 @@ deploy_for_os_using_apt () {
     done
 }
 
-# deploy_apps_use_snap () {
+# install snap app use --classic flag
+install_snap_app_use_flag () {
+    echo "---> RUNNING COMMAND: $GREEN sudo snap install $app --classic $END_COLOR"
+    eval "echo $PASSWORD sudo -S snap install $app --classic 1>> $DIRECTORY_LOG/$FILE_OK 2>> $DIRECTORY_LOG/$FILE_ERROR"
+    check_exit_code_status
+}
 
-# }
+deploy_apps_from_snap () {
+    # NOTE: app use flag --classic: nvim, code
+    # TIPS: applications that use flag --classic, should be put at the top inside the array to increase performance
+    apps='
+        nvim
+        code
+        curl
+        spotify
+    '
+    for app in $apps; do
+        echo "---> CHECKING $app EXISTS ON THE SYSTEM OR NOT?"
 
-# deploy_apps_use_flathub () {
+        if snap list --all | grep -q "$app"; then
+            echo "$GREEN THE $app IS INSTALLED.$END_COLOR"
+        else
+            echo "$YELLOW THE $app IS NOT INSTALLED.$END_COLOR"
+            
+            if [ "$app" = "nvim" ]; then
+                install_snap_app_use_flag
+            elif [ "$app" = "code" ]; then
+                install_snap_app_use_flag
+            else
+                echo "---> RUNNING COMMAND: $GREEN sudo snap install $app $END_COLOR"
+                eval "echo $PASSWORD sudo -S snap install $app 1>> $DIRECTORY_LOG/$FILE_OK 2>> $DIRECTORY_LOG/$FILE_ERROR"
+                check_exit_code_status
+            fi    
+        fi
+    done
+}
+
+deploy_apps_from_flathub () {
+    # 
+    apps='
+        "com.brave.Browser"
+        "com.spotify.Client"
+        "org.flameshot.Flameshot"
+        "org.libreoffice.LibreOffice"
+        "com.google.Chrome"
+        "org.videolan.VLC"
+        "org.ferdium.Ferdium"
+        "io.dbeaver.DBeaverCommunity"
+        "com.github.unrud.VideoDownloader"
+    '
     
-# }
+    for app in $apps; do
+    eval "echo $PASSWORD sudo -S "
+    done
+}
+
+# vnn1489
 
 # deploy_apps_from_official () {
     
@@ -105,17 +173,26 @@ eval "$PASSWORD sudo -S touch $DIRECTORY_LOG/$FILE_OK $DIRECTORY_LOG/$FILE_ERROR
 eval "$PASSWORD sudo -S chown -R $USER:$GROUP $DIRECTORY_LOG"
 
 # check distrobution info to select package management to deploy
-# ???? toi uu phan nay, su dung for loop
 echo "---> CHECKING PACKAGE MANAGEMENT TO DEPLOY FROM $FILE_RELEASE_INFO...."
-if  grep -q "Pop" $FILE_RELEASE_INFO || grep -q "Ubuntu" $FILE_RELEASE_INFO || grep -q "Lubuntu" $FILE_RELEASE_INFO; then
-    deploy_for_os_using_apt
-else
-    echo "$RED NOT FOUND \"Pop\" OR \"Ubuntu\" INSIDE $FILE_RELEASE_INFO $END_COLOR"
-    exit 1
-fi
 
-#### LOOKING FOR SOLUTIONS FOR THIS IMPLEMENTATION WAY
-# distributions=("Pop" "Ubuntu" "Lubuntu")
+distros='
+    "Pop"
+    "Lubuntu"
+    "Ubuntu"
+'
+
+for distro in $distros; do
+    if grep -q -e "$distro" "$FILE_RELEASE_INFO"; then
+        deploy_for_os_using_apt
+        deploy_apps_from_snap
+        break
+    else
+        echo "$RED NOT FOUND $distro INSIDE $FILE_RELEASE_INFO $END_COLOR"
+        # exit 1
+    fi
+done
+
+
 # if grep -q -e "${distributions[@]}" "$FILE_RELEASE_INFO"; then
 #     echo "---> RUNNING COMMAND: $GREEN sudo apt update -y $END_COLOR"
 #     eval "$PASSWORD sudo -S apt update -y 1>> $FILE_NULL 2>> $DIRECTORY_LOG/$FILE_ERROR"

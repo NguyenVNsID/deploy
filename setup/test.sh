@@ -14,4 +14,4 @@ for app in "tmux" "ibus-unikey" "solaar" "gnome-tweaks"; do
     else
         echo "$app is not installed."
     fi
-done
+done    
