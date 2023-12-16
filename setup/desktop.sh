@@ -1,6 +1,9 @@
 #!/bin/bash
 
 #### SET ENVIRONMENT VARIABLE
+# script name
+SCRIPT_NAME="desktop.sh"
+
 # color
 GREEN="\e[32m"
 RED="\e[31m"
@@ -19,6 +22,7 @@ FILE_NULL=/dev/null
 FILE_RELEASE_INFO=/etc/os-release
 FILE_ERROR=error.log
 FILE_OK=ok.log
+FILE_SUDO=/etc/sudoers
 
 # networking
 PING="8.8.8.8"
@@ -38,17 +42,46 @@ check_exit_code_status() {
 check_upgrade() {
     echo "---> CHECKING ADDITIONAL UPGRADE PACKAGES...."
 
-    eval "$PASSWORD | 
-        sudo -S apt list --upgradable | awk '{ print $1 }' | grep '/' | cut -d'/' -f1 |
+    sudo apt list --upgradable | awk '{ print $1 }' | grep '/' | cut -d'/' -f1 | while read -r PACKAGE_NAME; do
+        echo "---> UPGRADING $GREEN $PACKAGE_NAME $END_COLOR PACKAGE...."
+        echo "---> RUNNING COMMAND: $GREEN sudo apt upgrade -y $PACKAGE_NAME $END_COLOR"
+        
+        vnn1489: KIEM TRA XEM TAI SAO CAU LENH NAY LAI KHONG DUOC CHAY
+        sudo apt upgrade -y $PACKAGE_NAME 1>> $FILE_OK 2>> $FILE_ERROR
+    done
+    check_exit_code_status
     
-        while read -r PACKAGE_NAME; do
-            echo '---> UPGRADING $PACKAGE_NAME PACKAGE....'
-            eval '$PASSWORD | sudo -S apt upgrade -y $PACKAGE_NAME'
-        done
-        check_exit_code_status
-    "
-
     echo "$GREEN COMPLETE DEPLOY UPGRADE PACKAGE PROCESS!$END_COLOR"
+}
+
+
+# check_upgrade() {
+#     echo "---> CHECKING ADDITIONAL UPGRADE PACKAGES...."
+
+#     eval "$PASSWORD | 
+#         sudo -S apt list --upgradable | awk '{ print $1 }' | grep '/' | cut -d'/' -f1 |
+    
+#         while read -r PACKAGE_NAME; do
+#             echo '---> UPGRADING $PACKAGE_NAME PACKAGE....'
+#             eval '$PASSWORD | sudo -S apt upgrade -y $PACKAGE_NAME 1>> $FILE_OK 2>> $FILE_ERROR'
+#         done
+#         check_exit_code_status
+#     "
+
+#     echo "$GREEN COMPLETE DEPLOY UPGRADE PACKAGE PROCESS!$END_COLOR"
+# }
+
+
+
+# TESTING WITH EXIT CODE
+test_with_exit_code_is_0 () {
+    echo "$YELLOW YOU ARE TESTING YOUR CODE WITH EXIT CODE IS 0$END_COLOR"
+    exit 0
+}
+
+test_with_exit_code_is_1 () {
+    echo "$YELLOW YOU ARE TESTING YOUR CODE WITH EXIT CODE IS 1$END_COLOR"
+    exit 1
 }
 
 # deploy for os is debian or based-on debian
@@ -189,6 +222,27 @@ read INPUT_PASS
 stty echo
 echo    # newline
 
+# checking user can execute commands with sudo permission
+echo "---> CHECKING $(whoami) USER CAN EXECUTE COMMANDS WITH SUDO PERMISSION...."
+
+sudo -l 1>> $FILE_OK 2>> $FILE_ERROR
+
+if [ $? -eq 0 ]; then
+    echo "$GREEN $(whoami) USER CAN RUN COMMANDS ON LINUX WITH SUDO PERMISSION.$END_COLOR"
+else    
+    echo "$RED $(whoami) USER CANNOT RUN COMMANDS ON LINUX WITH SUDO PERMISSION$END_COLOR"
+    echo "---> REFER TO THE FOLLOWING INSTRUCTIONS TO ADD $GREEN $USER $END_COLOR USER INTO $FILE_SUDO FILE."
+    echo "---> RUN COMMAND $GREEN su root $END_COLOR AND ENTER PASSWORD"
+    echo "---> NEXT, RUN COMMAND $GREEN echo '$USER     ALL=(ALL:ALL) ALL' >> $FILE_SUDO $END_COLOR"
+    echo "---> END, RUN COMMAND $GREEN exit $END_COLOR TO EXIT ROOT SESSION"
+    echo "---> AFTER ALL THAT, PLEASE RE-RUN $GREEN $SCRIPT_NAME $END_COLOR FILE"
+fi
+
+# create file to write log ok, log error message during installation
+eval "$PASSWORD | sudo -S mkdir -p $DIRECTORY_LOG"
+eval "$PASSWORD | sudo -S touch $DIRECTORY_LOG/$FILE_OK $DIRECTORY_LOG/$FILE_ERROR"
+eval "$PASSWORD | sudo -S chown -R $USER:$GROUP $DIRECTORY_LOG"
+
 # create new directory inside user directory (option)
 echo "---> CREATING $DIRECTORY DIRECTORY INSIDE /home/$USER...."
 eval "$PASSWORD | sudo -S mkdir -p /home/$USER/$DIRECTORY"
@@ -205,11 +259,6 @@ else
     echo "$RED PLEASE CHECK NETWORK ON THIS SYSTEM!$END_COLOR"
     exit 1
 fi
-
-# create file to write log ok, log error message during installation
-eval "$PASSWORD | sudo -S mkdir -p $DIRECTORY_LOG"
-eval "$PASSWORD | sudo -S touch $DIRECTORY_LOG/$FILE_OK $DIRECTORY_LOG/$FILE_ERROR"
-eval "$PASSWORD | sudo -S chown -R $USER:$GROUP $DIRECTORY_LOG"
 
 # check distrobution info to select package management to deploy
 echo "---> CHECKING PACKAGE MANAGEMENT TO DEPLOY FROM $FILE_RELEASE_INFO...."

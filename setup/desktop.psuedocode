@@ -38,11 +38,3 @@ fi
 
 
 
-
-
-
-check dau ra xem co noi dung apt list --upgradable nay khoong
-# List upgradable & deploy packages
-sudo apt list --upgradable | awk '{ print $1 }' | grep '/' | cut -d'/' -f1 | while read -r PACKAGE_NAME; do
-    sudo apt upgrade -y $PACKAGE_NAME
-done
