@@ -35,6 +35,22 @@ check_exit_code_status() {
     fi
 }
 
+check_upgrade() {
+    echo "---> CHECKING ADDITIONAL UPGRADE PACKAGES...."
+
+    eval "$PASSWORD | 
+        sudo -S apt list --upgradable | awk '{ print $1 }' | grep '/' | cut -d'/' -f1 |
+    
+        while read -r PACKAGE_NAME; do
+            echo '---> UPGRADING $PACKAGE_NAME PACKAGE....'
+            eval '$PASSWORD | sudo -S apt upgrade -y $PACKAGE_NAME'
+        done
+        check_exit_code_status
+    "
+
+    echo "$GREEN COMPLETE DEPLOY UPGRADE PACKAGE PROCESS!$END_COLOR"
+}
+
 # deploy for os is debian or based-on debian
 deploy_software_use_apt () {
     echo "---> DEPLOYING WITH APT PACKAGE MANAGEMENT"
@@ -49,6 +65,7 @@ deploy_software_use_apt () {
     for option in $options; do
         echo "---> RUNNING COMMAND: $GREEN sudo apt $option -y $END_COLOR"
         eval "$PASSWORD | sudo -S apt $option -y 1>> $DIRECTORY_LOG/$FILE_OK 2>> $DIRECTORY_LOG/$FILE_ERROR"
+        check_upgrade
         check_exit_code_status
     done
 
@@ -64,7 +81,7 @@ deploy_software_use_apt () {
         flatpak
         gnome-software-plugin-flatpak
     '
-    
+
     for app in $apps; do
         echo "---> CHECKING $app EXISTS ON THE SYSTEM OR NOT?"
 
@@ -75,14 +92,22 @@ deploy_software_use_apt () {
             echo "---> RUNNING COMMAND: $GREEN sudo apt install -y $app $END_COLOR"
             eval "$PASSWORD | sudo -S apt install -y $app 1>> $DIRECTORY_LOG/$FILE_OK 2>> $DIRECTORY_LOG/$FILE_ERROR"
             check_exit_code_status
+            check_upgrade
         fi
     done
 }
 
-# install snap app use --classic flag
-deploy_software_use_flag_option () {
+# install snap app use 1 flag
+deploy_software_use_1_flag () {
     echo "---> RUNNING COMMAND: $GREEN sudo snap install $app --classic $END_COLOR"
     eval "$PASSWORD | sudo -S snap install $app --classic 1>> $DIRECTORY_LOG/$FILE_OK 2>> $DIRECTORY_LOG/$FILE_ERROR"
+    check_exit_code_status
+}
+
+# install snap app use 2 flag
+deploy_software_use_2_flag () {
+    echo "---> RUNNING COMMAND: $GREEN sudo snap install $app --edge --classic $END_COLOR"
+    eval "$PASSWORD | sudo -S snap install $app --edge --classic 1>> $DIRECTORY_LOG/$FILE_OK 2>> $DIRECTORY_LOG/$FILE_ERROR"
     check_exit_code_status
 }
 
@@ -93,9 +118,11 @@ deploy_software_use_snap () {
     apps='
         nvim
         code
+        node
         curl
         spotify
     '
+
     for app in $apps; do
         echo "---> CHECKING $app EXISTS ON THE SYSTEM OR NOT?"
 
@@ -105,9 +132,11 @@ deploy_software_use_snap () {
             echo "$YELLOW THE $app IS NOT INSTALLED.$END_COLOR"
             
             if [ "$app" = "nvim" ]; then
-                deploy_software_use_flag_option
+                deploy_software_use_1_flag
             elif [ "$app" = "code" ]; then
-                deploy_software_use_flag_option
+                deploy_software_use_1_flag
+            elif [ "$app" = "node" ];then
+                deploy_software_use_2_flag
             else
                 echo "---> RUNNING COMMAND: $GREEN sudo snap install $app $END_COLOR"
                 eval "$PASSWORD | sudo -S snap install $app 1>> $DIRECTORY_LOG/$FILE_OK 2>> $DIRECTORY_LOG/$FILE_ERROR"

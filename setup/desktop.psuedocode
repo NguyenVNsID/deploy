@@ -5,3 +5,44 @@
 
 
 kiem tra xem khi ubuntu moi tinh co snap o apt hay dpkg
+
+
+DOCKER
+sudo apt install gnome-terminal
+sudo apt remove docker-desktop
+rm -r $HOME/.docker/desktop
+sudo rm /usr/local/bin/com.docker.cli
+sudo apt purge docker-desktop
+Download latest DEB package.
+cd Download
+sudo apt-get update
+sudo apt-get install ./docker-desktop-<version>-<arch>.deb (neu cau lenh nay khong chay, thuc thi cau lenh duoi)
+sudo dpkg -i ./docker-desktop-4.26.1-amd64.deb 
+
+
+VIRTUALBOX
+sudo apt install -y 
+neu exit code la 1, chay cau lenh duoi
+sudo apt --fix-broken install
+sudo apt install -y virtualbox
+
+output=$(sudo apt-get install your-software-name )
+
+# Check if the output contains the specific message
+if [[ $output =~ "apt --fix-broken install" ]]; then
+  echo "The installation encountered broken dependencies. Running 'apt --fix-broken install'."
+  sudo apt --fix-broken install
+else
+  echo "Installation successful. No need to run 'apt --fix-broken install'."
+fi
+
+
+
+
+
+
+check dau ra xem co noi dung apt list --upgradable nay khoong
+# List upgradable & deploy packages
+sudo apt list --upgradable | awk '{ print $1 }' | grep '/' | cut -d'/' -f1 | while read -r PACKAGE_NAME; do
+    sudo apt upgrade -y $PACKAGE_NAME
+done
