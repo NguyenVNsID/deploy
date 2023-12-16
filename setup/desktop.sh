@@ -96,6 +96,7 @@ deploy_software_use_snap () {
         curl
         spotify
     '
+    
     for app in $apps; do
         echo "---> CHECKING $app EXISTS ON THE SYSTEM OR NOT?"
 
