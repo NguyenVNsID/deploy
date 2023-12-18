@@ -1,11 +1,19 @@
 #!/bin/bash
 
-# List upgradable packages
-upgradable_packages=$(sudo apt list --upgradable | grep -oP '\S+\/\S+' | grep -v -E 'Listing|Done')
-
-# Upgrade all upgradable packages
-sudo apt upgrade -y
-
-# Install upgradable packages
-sudo apt install -y $upgradable_packages
-fdsfdsfsdfdsf
+delete_apps_default () {
+    apps'
+        libreoffice
+        aisleriot
+        gnome-mahjongg
+        gnome-mines
+        shotwell-common
+        shotwell
+        gnome-sudoku
+        gnome-todo-common
+        gnome-todo
+        libgnome-todo
+        transmission-common
+        cheese-common
+        cheese
+    '
+}

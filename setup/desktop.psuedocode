@@ -1,40 +1,40 @@
-1 kiểm tra người dùng có nằm trong sudoers file không?
-    1.0 nếu có > chạy các câu lệnh tiếp theo
-    1.1 nếu không > chạy su root > nhập pass > chạy sudo visudo hoặc sudo EDITOR=vim visudo > thiết lập cho user & group
-
-
-
-kiem tra xem khi ubuntu moi tinh co snap o apt hay dpkg
-
-
-DOCKER
-sudo apt install gnome-terminal
-sudo apt remove docker-desktop
-rm -r $HOME/.docker/desktop
-sudo rm /usr/local/bin/com.docker.cli
-sudo apt purge docker-desktop
-Download latest DEB package.
-cd Download
-sudo apt-get update
-sudo apt-get install ./docker-desktop-<version>-<arch>.deb (neu cau lenh nay khong chay, thuc thi cau lenh duoi)
-sudo dpkg -i ./docker-desktop-4.26.1-amd64.deb 
-
-
-VIRTUALBOX
-sudo apt install -y 
-neu exit code la 1, chay cau lenh duoi
-sudo apt --fix-broken install
-sudo apt install -y virtualbox
-
-output=$(sudo apt-get install your-software-name )
-
-# Check if the output contains the specific message
-if [[ $output =~ "apt --fix-broken install" ]]; then
-  echo "The installation encountered broken dependencies. Running 'apt --fix-broken install'."
-  sudo apt --fix-broken install
-else
-  echo "Installation successful. No need to run 'apt --fix-broken install'."
-fi
-
-
-
+- kiem tra xem khi ubuntu moi tinh co snap o apt hay dpkg chua
+- tim huong de cai dat docker engin & docker desktop
+-------------------------------------------------------------------------------------------------
+    # vim net-tools openssh-server xz-utils at sshpass python3-pip ncdu 
+    # NOTE: gnome-tweaks (use to when close screen, computer still run)
+    apps='
+        apt-transport-https
+        ca-certificates
+        git
+        snap
+        tmux
+        solaar
+        docker
+        ibus-unikey
+        gnome-tweaks
+        virtualbox
+        flatpak
+        gnome-software-plugin-flatpak
+    '
+-----------------------------------------------------------------------------------------
+    # NOTE: app use flag --classic: nvim, code
+    # TIPS: applications that use flag --classic, should be put at the top inside the array to increase performance
+    apps='
+        curl
+        nvim
+        code
+        node
+    '
+--------------------------------------------------------------------------------------------
+        apps='
+        com.brave.Browser
+        com.spotify.Client
+        org.flameshot.Flameshot
+        org.libreoffice.LibreOffice
+        com.google.Chrome
+        org.videolan.VLC
+        org.ferdium.Ferdium
+        io.dbeaver.DBeaverCommunity
+        com.github.unrud.VideoDownloader
+    '
