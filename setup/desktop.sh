@@ -6,6 +6,7 @@
         # git
         # snap *
         # tmux
+        # gnupg *
         # solaar
         # docker
         # ibus-unikey
@@ -43,6 +44,7 @@ SCRIPT_NAME="desktop.sh"
 
 # color
 GREEN="\e[32m"
+BLUE="\e[34m"
 RED="\e[31m"
 YELLOW="\e[33m"
 END_COLOR="\e[0m"
@@ -82,7 +84,7 @@ check_and_update_after_deployed_app_use_apt() {
         autoremove
     '
 
-    echo "---> CHECKING & UPDATING AFTER DEPLOYED SOFTWARE USE APT PACKAGES." 
+    echo "---> CHECKING & UPDATING AFTER DEPLOYED SOFTWARE USE APT PACKAGE MANAGEMENT." 
 
     for option in $options; do
         echo "---> RUNNING COMMAND: $GREEN sudo apt $option -y $END_COLOR"
@@ -122,9 +124,9 @@ deploy_software_use_apt () {
     # vim net-tools openssh-server xz-utils at sshpass python3-pip ncdu 
     # NOTE: gnome-tweaks (use to when close screen, computer still run)
     apps='
+        apt-transport-https
+        ca-certificates
         snap
-        flatpak
-        gnome-software-plugin-flatpak
         virtualbox
     '
 
@@ -147,7 +149,7 @@ deploy_software_use_snap () {
     # NOTE: app use flag --classic: nvim, code
     # TIPS: applications that use flag --classic, should be put at the top inside the array to increase performance
     apps='
-        nvim
+        curl
     '
 
     for app in $apps; do
@@ -240,8 +242,9 @@ delete_software_default_use_apt () {
 }
 
 ###############################################################################
-
 #### DEPLOYMENT
+echo "$BLUE THIS SCRIPT DESIGNED BY Nguyen Nguyen | CODED BY ChatGPT & Nguyen Nguyen $END_COLOR"
+
 # enter password to automatically install
 echo -n "ENTER YOUR PASSWORD: "
 stty -echo
@@ -301,10 +304,16 @@ for distro in $distros; do
         delete_software_default_use_apt
         deploy_software_use_apt
         deploy_software_use_snap
-        deploy_software_use_flathub
+        # deploy_software_use_flathub
+        echo "---> DEPLOY PROCESS IS COMPLETED."
+        echo "---> IF YOU NEED CHECK LOG TO WATCH ALL INSTALLED PROCESS."
+        echo "---> PLEASE RUN COMMANDS: $GREEN cat $DIRECTORY_LOG/$FILE_ERROR $END_COLOR TO CHECK ERROR LOG."
+        echo "---> OR RUN COMMANDS: $GREEN cat $DIRECTORY_LOG/$FILE_OK $END_COLOR TO CHECK OK LOG."
+        echo "$BLUE THIS SCRIPT DESIGNED BY Nguyen Nguyen | CODED BY ChatGPT & Nguyen Nguyen $END_COLOR"
         break
     else
         echo "$RED NOT FOUND $distro INSIDE $FILE_RELEASE_INFO $END_COLOR"
+        echo "$BLUE THIS SCRIPT DESIGNED BY Nguyen Nguyen | CODED BY ChatGPT & Nguyen Nguyen $END_COLOR"
         # comment tam de test script
         # exit 1
     fi

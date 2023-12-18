@@ -1,11 +1,11 @@
-- kiem tra xem khi ubuntu moi tinh co snap o apt hay dpkg chua
-- tim huong de cai dat docker engin & docker desktop
+- sau khi hoan tat cai dat, tien hanh xoa luon firefox
 -------------------------------------------------------------------------------------------------
     # vim net-tools openssh-server xz-utils at sshpass python3-pip ncdu 
     # NOTE: gnome-tweaks (use to when close screen, computer still run)
     apps='
         apt-transport-https
         ca-certificates
+        gnupg
         git
         snap
         tmux
@@ -38,3 +38,46 @@
         io.dbeaver.DBeaverCommunity
         com.github.unrud.VideoDownloader
     '
+
+
+    ----------------------------------------------------------
+    docker engin
+    # Add Docker's official GPG key:
+sudo apt-get update
+sudo apt-get install ca-certificates curl gnupg
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+
+# Add the repository to Apt sources:
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+sudo apt-get update
+
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+sudo docker run hello-world
+
+---------------------------------------------------------------------
+DOCKER DESKTOP
+
+
+TRUOC KHI THUC HIEN CAI DAT, CAN NHAP VAO DUONG LINK DE TAI PHAN MEM TU OFFICIAL VAO BIEN TRONG SCRIP CHO
+DOCKER DESKTOP & virtualbox
+
+# Define the Docker Desktop URL
+docker_desktop_url="LAY TU INPUT"
+virtualbox_url="LAY TU INPUT"
+
+# Download Docker Desktop package
+wget "$docker_desktop_url" -O /home/$(whoami)/Downloads/docker-desktop.deb
+
+# Install Docker Desktop
+sudo dpkg -i /home/$(whoami)/Downloads/docker-desktop.deb
+
+# Cleanup (remove the downloaded package)
+rm /home/$(whoami)/Downloads/docker-desktop.deb
+
