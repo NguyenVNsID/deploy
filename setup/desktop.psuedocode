@@ -3,6 +3,7 @@
     # vim net-tools openssh-server xz-utils at sshpass python3-pip ncdu 
     # NOTE: gnome-tweaks (use to when close screen, computer still run)
     apps='
+        curl
         apt-transport-https
         ca-certificates
         gnupg
@@ -21,7 +22,6 @@
     # NOTE: app use flag --classic: nvim, code
     # TIPS: applications that use flag --classic, should be put at the top inside the array to increase performance
     apps='
-        curl
         nvim
         code
         node

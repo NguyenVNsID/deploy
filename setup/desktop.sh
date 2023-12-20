@@ -1,6 +1,7 @@
 #!/bin/bash
 # * CAC PHAN MEM NAY PHAI DUOC CAI TRUOC TIEN
 #### APT
+        # curl *
         # apt-transport-https *
         # ca-certificates *
         # git
@@ -35,7 +36,6 @@
 
 #### SNAP
         # node
-        # curl *
 
 ###############################################################################
 #### SET ENVIRONMENT VARIABLE
@@ -149,7 +149,7 @@ deploy_software_use_snap () {
     # NOTE: app use flag --classic: nvim, code
     # TIPS: applications that use flag --classic, should be put at the top inside the array to increase performance
     apps='
-        curl
+        nvim
     '
 
     for app in $apps; do
