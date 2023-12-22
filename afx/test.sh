@@ -53,8 +53,3 @@ checksum_code=$(echo "$checksum_output" | awk '{print $1}')
 # Print the checksum code
 echo "SHA256 Checksum: $checksum_code"
 
-
-
-
-
-
