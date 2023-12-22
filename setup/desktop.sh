@@ -2,6 +2,7 @@
 # * CAC PHAN MEM NAY PHAI DUOC CAI TRUOC TIEN
 #### APT
         # curl *
+        # bat *
         # apt-transport-https *
         # ca-certificates *
         # git
