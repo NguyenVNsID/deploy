@@ -31,6 +31,7 @@
         # code
         # KCalc
         # obs studio
+        # nmap
 
 #### FLATPAK
         # google
