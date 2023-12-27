@@ -51,6 +51,10 @@
 # script name
 SCRIPT_NAME="desktop.sh"
 
+# time
+YYYYMMDD=`date +Y%m%d`
+YYYYMMDD_HM=`date +Y%m%d_%H%M`
+
 # color
 GREEN="\e[32m"
 BLUE="\e[34m"
