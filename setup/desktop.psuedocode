@@ -1,46 +1,6 @@
 - sau khi hoan tat cai dat, tien hanh xoa luon firefox
 -------------------------------------------------------------------------------------------------
-    # vim net-tools openssh-server xz-utils at sshpass python3-pip ncdu 
-    # NOTE: gnome-tweaks (use to when close screen, computer still run)
-    apps='
-        curl
-        apt-transport-https
-        ca-certificates
-        gnupg
-        git
-        snap
-        tmux
-        solaar
-        docker
-        ibus-unikey
-        gnome-tweaks
-        virtualbox
-        flatpak
-        gnome-software-plugin-flatpak
-    '
------------------------------------------------------------------------------------------
-    # NOTE: app use flag --classic: nvim, code
-    # TIPS: applications that use flag --classic, should be put at the top inside the array to increase performance
-    apps='
-        nvim
-        code
-        node
-    '
---------------------------------------------------------------------------------------------
-        apps='
-        com.brave.Browser
-        com.spotify.Client
-        org.flameshot.Flameshot
-        org.libreoffice.LibreOffice
-        com.google.Chrome
-        org.videolan.VLC
-        org.ferdium.Ferdium
-        io.dbeaver.DBeaverCommunity
-        com.github.unrud.VideoDownloader
-    '
-
-
-    ----------------------------------------------------------
+----------------------------------------------------------
     docker engin
     # Add Docker's official GPG key:
 sudo apt-get update
@@ -63,7 +23,6 @@ sudo docker run hello-world
 
 ---------------------------------------------------------------------
 DOCKER DESKTOP
-
 
 TRUOC KHI THUC HIEN CAI DAT, CAN NHAP VAO DUONG LINK DE TAI PHAN MEM TU OFFICIAL VAO BIEN TRONG SCRIP CHO
 DOCKER DESKTOP & virtualbox

@@ -12,11 +12,18 @@
         # solaar
         # docker
         # ibus-unikey
-        # gnome-tweaks
+        # gnome-tweaks (use to when close screen, computer still run)
         # virtualbox
         # flatpak *
         # gnome-software-plugin-flatpak *
         # python3
+        # net-tools
+        # openssh-server
+        # xz-utils
+        # at
+        # sshpass
+        # python3-pip
+        # ncdu
 
 #### SNAP & FLATPAK
         # brave
@@ -27,8 +34,8 @@
         # ferdium
         # dbeaver
         # Video Downloader
-        # nvim
-        # code
+        # nvim (use --classic for snap)
+        # code (use --classic for snap)
         # KCalc
         # obs studio
         # nmap
@@ -123,8 +130,6 @@ deploy_software_use_apt () {
     check_exit_code_status
     check_and_update_after_deployed_app_use_apt
 
-    # vim net-tools openssh-server xz-utils at sshpass python3-pip ncdu 
-    # NOTE: gnome-tweaks (use to when close screen, computer still run)
     apps='
         apt-transport-https
         ca-certificates
@@ -148,9 +153,7 @@ deploy_software_use_apt () {
 }
 
 deploy_software_use_snap () {
-    # NOTE: app use flag --classic: nvim, code
-    # TIPS: applications that use flag --classic, should be put at the top inside the array to increase performance
-    apps='
+   apps='
         nvim
     '
 <<<<<<< HEAD
