@@ -10,6 +10,10 @@ RED='\e[31m'
 YELLOW='\e[33m'
 END_COLOR='\e[0m'
 
+# group & user
+USER=psp
+GROUP=psp
+
 # time
 HHMM=$(date +%H%M)
 YYYYMMDD=$(date +%Y%m%d)
@@ -21,12 +25,8 @@ SOURCE_CURRENT=/opt/01.PSP/03.Deploy/01.psp-hub/00.psp-discovery-api/source-depl
 SOURCE_BACKUP=/opt/03.Backups/discovery
 SOURCE_NEW=/home/psp/newsource/00.psp-hub/discovery
 SOURCE_FILE=discovery-service-1.0.0.jar
-DOCKER_REPO=public.ecr.aws/y7a2a4q9/psp # ????
-IMAGE_NAME=psp-discovery-api-$YYYYMMDD_HM # ????
-
-# group & user
-USER=psp
-GROUP=psp
+DOCKER_REPO=public.ecr.aws/y7a2a4q9/$USER # ????
+IMAGE_NAME=psp-discovery-api-$YYYYMMDD_HM # ???? suggest DOCKER_IMAGE=psp-discovery-api-$YYYYMMDD_HM
 
 ############# run code #############
 # check if the script is run by the 'psp' user
@@ -49,7 +49,7 @@ if [ -f $SOURCE_NEW/$YYYYMMDD/$SOURCE_FILE ]; then
     echo "$GREEN Deploy $SERVICE_NAME: Begin. $END_COLOR"
 
     echo "---> Backup source code."
-    mv $SOURCE_CURRENT/$SOURCE_FILE $SOURCE_BACKUP/$YYYYMMDD/
+    mv $SOURCE_CURRENT/$SOURCE_FILE $SOURCE_BACKUP/$YYYYMMDD
     sleep 2
 
     echo "---> Copy new source."
@@ -58,7 +58,7 @@ if [ -f $SOURCE_NEW/$YYYYMMDD/$SOURCE_FILE ]; then
 
     echo "---> Build container from image."
     cd /opt/01.PSP/03.Deploy/01.psp-hub/00.psp-discovery-api
-    docker build -t "$DOCKER_REPO:$IMAGE_NAME" .  # ???? can remove "
+    docker build -t "$DOCKER_REPO:$IMAGE_NAME" .  # ???? can remove " | suggest: "." will use variable BUILD_PATH_CONTEXT
     sleep 2
 
     # ????
@@ -74,7 +74,7 @@ if [ -f $SOURCE_NEW/$YYYYMMDD/$SOURCE_FILE ]; then
 
     echo "$GREEN Result md5sum of newsource is: $(sudo md5sum $SOURCE_CURRENT/$SOURCE_FILE | awk '{print $1}'). $END_COLOR"
 
-    echo "$GREEN Deploy $SERVICE_NAME: Done. $END_COLOR" 
+    echo "$GREEN Deploy $SERVICE_NAME: Done. $END_COLOR"
 else
     echo "$RED New source not found! $END_COLOR"
 fi
