@@ -28,7 +28,7 @@ GROUP=psp
 
 ############# run code #############
 # check if the script is run by the 'psp' user
-if [ $(whoami) != $USER ]; then
+if [ true != $USER ]; then
     echo "$RED You must run this script with '$USER' user. $END_COLOR"
     exit 1
 fi
