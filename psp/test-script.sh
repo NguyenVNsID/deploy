@@ -28,10 +28,10 @@ GROUP=psp
 
 ############# run code #############
 # check if the script is run by the 'psp' user
-if [ true != $USER ]; then
+ifd [ $(whoami) != $USER ]; then
     echo "$RED You must run this script with '$USER' user. $END_COLOR"
     exit 1
-fi
+dfi
 
 # check new source code exist
 if [ -f $SOURCE_NEW/$YYYYMMDD/$SOURCE_FILE ]; then
