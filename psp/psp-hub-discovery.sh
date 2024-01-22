@@ -24,8 +24,8 @@ SOURCE_SPACE=/opt/01.PSP/02.MicroK8s/01.PSP-hub
 CONFIG=psp-discovery-api.yaml
 
 # docker
-DOCKER_REPO=public.ecr.aws/y7a2a4q9/psp # ????
-DOCKER_IMAGE=psp-discovery-api-$YYYYMMDD_HM # ???? ---> DOCKER_IMAGE=psp-discovery-api-$YYYYMMDD_HM
+DOCKER_REPO=public.ecr.aws/y7a2a4q9/psp
+DOCKER_IMAGE=psp-discovery-api-$YYYYMMDD_HM
 
 ############# run code #############
 # check user
