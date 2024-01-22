@@ -17,28 +17,30 @@ YYYYMMDD_HM=$(date +%Y%m%d_%H%M)
 
 # file & directory
 SERVICE_NAME='discovery service'
-SOURCE_CURRENT=/opt/source-current
-SOURCE_BACKUP=/opt/source-backup
-SOURCE_NEW=/opt/source-new
-SOURCE_FILE=source-file
+SOURCE_NAME=source-current-1
+SOURCE_CURRENT=/opt/$SOURCE_NAME
+SOURCE_BACKUP=/opt/source-backup/$SOURCE_NAME
+SOURCE_NEW=/opt/source-new/$SOURCE_NAME
+SOURCE_FILE=Termius.deb
 
 # group & user
-USER=psp
-GROUP=psp
+USER=linux
+GROUP=linux
 
 ############# run code #############
 # check if the script is run by the 'psp' user
-ifd [ $(whoami) != $USER ]; then
+if [ $(whoami) != $USER ]; then
     echo "$RED You must run this script with '$USER' user. $END_COLOR"
     exit 1
-dfi
+fi
 
 # check new source code exist
 if [ -f $SOURCE_NEW/$YYYYMMDD/$SOURCE_FILE ]; then
     # check & create backup directory
-    if [ -d $BACKUP/$YYYYMMDD ]; then
+    if [ -d $SOURCE_BACKUP/$YYYYMMDD ]; then
         echo "$GREEN Rename the current backup file. $END_COLOR"
         mv $SOURCE_BACKUP/$YYYYMMDD/$SOURCE_FILE $SOURCE_BACKUP/$YYYYMMDD/$SOURCE_FILE.$HHMM
+        sleep 2
     else
         mkdir -p $SOURCE_BACKUP/$YYYYMMDD
     fi
