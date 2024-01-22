@@ -37,7 +37,7 @@ fi
 # check new source code exist
 if [ -f $SOURCE_NEW/$YYYYMMDD/$SOURCE_FILE ]; then
     # check & create backup directory
-    if [ -d $BACKUP/$YYYYMMDD ]; then
+    if [ -d $SOURCE_BACKUP/$YYYYMMDD ]; then
         mv $SOURCE_BACKUP/$YYYYMMDD/$SOURCE_FILE $SOURCE_BACKUP/$YYYYMMDD/$SOURCE_FILE.$YYYYMMDD_HM
         sleep 2
     else
@@ -50,14 +50,14 @@ if [ -f $SOURCE_NEW/$YYYYMMDD/$SOURCE_FILE ]; then
     mv $SOURCE_CURRENT/$SOURCE_FILE $SOURCE_BACKUP/$YYYYMMDD
     sleep 2
 
-    cp $SOURCE_NEW/$YYYYMMDD/$SOURCE_FILE $SOURCE_CURRENT/$SOURCE_FILE
+    cp $SOURCE_NEW/$YYYYMMDD/$SOURCE_FILE $SOURCE_CURRENT
     sleep 2
 
     cd /opt/01.PSP/03.Deploy/01.psp-hub/00.psp-discovery-api
     docker build -t $DOCKER_REPO:$DOCKER_IMAGE ./
     sleep 2
 
-    sudo aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin "$DOCKER_REPO"
+    sudo aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin $DOCKER_REPO
     docker push $DOCKER_REPO:$DOCKER_IMAGE
     sleep 2
 
