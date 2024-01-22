@@ -20,8 +20,8 @@ SOURCE_CURRENT=/opt/01.PSP/03.Deploy/01.psp-hub/00.psp-discovery-api/source-depl
 SOURCE_BACKUP=/opt/03.Backups/$SOURCE_NAME
 SOURCE_NEW=/home/psp/newsource/00.psp-hub/$SOURCE_NAME
 SOURCE_FILE=discovery-service-1.0.0.jar
-SOURCE_SPACE=/opt/01.PSP/02.MicroK8s/01.PSP-hub
-CONFIG=psp-discovery-api.yaml
+CONFIG_SPACE=/opt/01.PSP/02.MicroK8s/01.PSP-hub
+CONFIG_FILE=psp-discovery-api.yaml
 
 # docker
 DOCKER_REPO=public.ecr.aws/y7a2a4q9/psp
@@ -61,9 +61,9 @@ if [ -f $SOURCE_NEW/$YYYYMMDD/$SOURCE_FILE ]; then
     docker push $DOCKER_REPO:$DOCKER_IMAGE
     sleep 2
 
-    cd $SOURCE_SPACE
-    vim -c ":%!sed 's|image: $DOCKER_REPO:psp-discovery-api-.*|image: $DOCKER_REPO:$DOCKER_IMAGE|'" -c "wq" $SOURCE_SPACE/$CONFIG
-    microk8s kubectl apply -f $CONFIG
+    cd $CONFIG_SPACE
+    vim -c ":%!sed 's|image: $DOCKER_REPO:psp-discovery-api-.*|image: $DOCKER_REPO:$DOCKER_IMAGE|'" -c "wq" $CONFIG_SPACE/$CONFIG_FILE
+    microk8s kubectl apply -f $CONFIG_FILE
     sleep 2
 
     echo "--> --> Result md5sum of newsource is: $YELLOW $(sudo md5sum $SOURCE_CURRENT/$SOURCE_FILE | awk '{print $1}'). $END_COLOR"
