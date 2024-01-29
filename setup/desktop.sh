@@ -1,91 +1,36 @@
 #!/bin/bash
 # * CAC PHAN MEM NAY PHAI DUOC CAI TRUOC TIEN
 #### APT
-        # curl *
-        # bat *
-        # apt-transport-https *
-        # ca-certificates *
-        # git
-        # snap *
-        # tmux
-        # gnupg *
-        # solaar
-        # docker
-        # ibus-unikey
-        # gnome-tweaks (use to when close screen, computer still run)
-        # virtualbox
-        # flatpak *
-        # gnome-software-plugin-flatpak *
-        # python3
-        # net-tools
-        # openssh-server
-        # xz-utils
-        # at
-        # sshpass
-        # python3-pip
-        # ncdu
+    # python3
+    # net-tools
+    # openssh-server
+    # xz-utils
+    # at
+    # sshpass
+    # python3-pip
+    # bat
 
-#### SNAP & FLATPAK
-        # brave
-        # spotify
-        # flameshot
-        # libreoffice
-        # vlc
-        # ferdium
-        # dbeaver
-        # Video Downloader
-        # nvim (use --classic for snap)
-        # code (use --classic for snap)
-        # KCalc
-        # obs studio
-        # nmap
-
-#### FLATPAK
-        # google
-
-#### SNAP
-        # node
-
-###############################################################################
-#### SET ENVIRONMENT VARIABLE
-# script name
-SCRIPT_NAME="desktop.sh"
-
-# time
-YYYYMMDD=`date +Y%m%d`
-YYYYMMDD_HM=`date +Y%m%d_%H%M`
-
-# color
-GREEN="\e[32m"
-BLUE="\e[34m"
-RED="\e[31m"
-YELLOW="\e[33m"
-END_COLOR="\e[0m"
+#### SET ENVIRONMENT VARIABLE ####
 
 # user & group
 USER="linux"
 GROUP="linux"
-PASSWORD='echo $INPUT_PASS'
 
 # file & directory
-DIRECTORY=nnn1489 # option
+DIRECTORY=vnn1489
 DIRECTORY_LOG=/var/opt/log
 FILE_NULL=/dev/null
 FILE_RELEASE_INFO=/etc/os-release
 FILE_ERROR=error.log
-FILE_OK=ok.log
 FILE_SUDO=/etc/sudoers
 
 # networking
 PING="8.8.8.8"
 
-###############################################################################
-#### DEFINED FUNCTION
-check_exit_code_status() {
+#### DEFINED FUNCTION ####
+check_error() {
     if [ $? -ne 0 ]; then
-        echo "$RED PLEASE RUN COMMAND: cat $DIRECTORY_LOG/$FILE_ERROR TO CHECK ERROR LOG!$END_COLOR"
-    else
-        echo "$GREEN COMMAND RUN SUCCESSFULLY!$END_COLOR"
+        echo "--> --> please run command 'cat $DIRECTORY_LOG/$FILE_ERROR' to check error log!"
     fi
 }
 
@@ -97,60 +42,51 @@ check_and_update_after_deployed_app_use_apt() {
         autoremove
     '
 
-    echo "---> CHECKING & UPDATING AFTER DEPLOYED SOFTWARE USE APT PACKAGE MANAGEMENT." 
+    echo "--> --> --> checking & updating after deployed software use apt package management."
 
     for option in $options; do
-        echo "---> RUNNING COMMAND: $GREEN sudo apt $option -y $END_COLOR"
-        sudo -S apt $option -y 1>> $DIRECTORY_LOG/$FILE_OK 2>> $DIRECTORY_LOG/$FILE_ERROR
-        check_exit_code_status
+        sudo -S apt $option -y 1>> $DIRECTORY_LOG/$FILE_NULL 2>> $DIRECTORY_LOG/$FILE_ERROR
+        check_error
     done
 
     sudo apt list --upgradable | awk '{ print $1 }' | grep '/' | cut -d'/' -f1 |
 
     while read -r PACKAGE_NAME; do
-        echo "---> RUNNING COMMAND: $GREEN sudo apt upgrade -y $PACKAGE_NAME $END_COLOR"
-        sudo apt upgrade -y $PACKAGE_NAME 1>> $FILE_OK 2>> $FILE_ERROR
-        check_exit_code_status
+        sudo apt upgrade -y $PACKAGE_NAME 1>> $FILE_NULL 2>> $FILE_ERROR
+        check_error
     done
-    
-    echo "$GREEN COMPLETE PROCESS DEPLOY SOFTWARE USE APT PACKAGES!$END_COLOR"
-}
-
-test_with_exit_code_is_0 () {
-    echo "$YELLOW YOU ARE TESTING YOUR CODE WITH EXIT CODE IS 0$END_COLOR"
-    exit 0
-}
-
-test_with_exit_code_is_1 () {
-    echo "$YELLOW YOU ARE TESTING YOUR CODE WITH EXIT CODE IS 1$END_COLOR"
-    exit 1
 }
 
 deploy_software_use_apt () {
-    # deploy for os is debian or based-on debian
-    echo "---> DEPLOYING WITH APT PACKAGE MANAGEMENT"
-    echo "---> RUNNING COMMAND: $GREEN sudo apt update -y $END_COLOR"
-    sudo apt update -y 1>> $DIRECTORY_LOG/$FILE_OK 2>> $DIRECTORY_LOG/$FILE_ERROR
-    check_exit_code_status
+    echo "--> deploying with apt package management"
+    echo "--> --> running command 'sudo apt update -y'"
+    sudo apt update -y 1>> $DIRECTORY_LOG/$FILE_NULL 2>> $DIRECTORY_LOG/$FILE_ERROR
+    check_error
     check_and_update_after_deployed_app_use_apt
 
     apps='
+        curl
         apt-transport-https
         ca-certificates
         snap
-        virtualbox
+        flatpak
+        gnome-software-plugin-flatpak
+        git
+        solaar
+        ibus-unikey
+        gnome-tweaks
     '
 
     for app in $apps; do
-        echo "---> CHECKING $GREEN $app $END_COLOR EXISTS ON THE SYSTEM OR NOT?"
+        echo "--> --> checking '$app' exists on the system or not?"
 
         if apt list --installed | grep -q "^$app/"; then
-            echo "$GREEN $app APPLICATION HAS BEEN INSTALLED.$END_COLOR"
+            echo "--> --> --> '$app' application has been installed."
         else
-            echo "$YELLOW $app APPLICATION IS NOT INSTALLED.$END_COLOR"
-            echo "---> RUNNING COMMAND: $GREEN sudo apt install -y $app $END_COLOR"
-            sudo apt install -y $app 1>> $DIRECTORY_LOG/$FILE_OK 2>> $DIRECTORY_LOG/$FILE_ERROR
-            check_exit_code_status
+            echo "--> --> --> '$app' application is not installed."
+            echo "--> --> --> running command 'sudo apt install -y $app'"
+            sudo apt install -y $app 1>> $DIRECTORY_LOG/$FILE_NULL 2>> $DIRECTORY_LOG/$FILE_ERROR            
+            check_error
             check_and_update_after_deployed_app_use_apt
         fi
     done
@@ -158,71 +94,68 @@ deploy_software_use_apt () {
 
 deploy_software_use_snap () {
    apps='
-        nvim
+        brave
+        spotify
+        flameshot
+        libreoffice
+        vlc
+        ferdium
+        dbeaver-ce
+        video-downloader
+        kcalc
+        nmap 
+        code
+        node
     '
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> origin/main
     for app in $apps; do
-        echo "---> CHECKING $GREEN $app $END_COLOR EXISTS ON THE SYSTEM OR NOT?"
+        echo "--> checking '$app' exists on the system or not?"
 
         if snap list --all | grep -q "$app"; then
-            echo "$GREEN $app APPLICATION HAS BEEN INSTALLED.$END_COLOR"
+            echo "--> --> '$app' application has been installed."
         else
-            echo "$YELLOW $app APPLICATION IS NOT INSTALLED.$END_COLOR"
+            echo "--> --> '$app' application is not installed"
             
-            if [ "$app" = "nvim" ]; then
-                deploy_software_use_snap_1flag
-            elif [ "$app" = "code" ]; then
-                deploy_software_use_snap_1flag
+            if [ "$app" = "code" ]; then
+                echo "--> --> running command 'sudo snap install $app --classic'"
+                sudo snap install $app --classic 1>> $DIRECTORY_LOG/$FILE_NULL 2>> $DIRECTORY_LOG/$FILE_ERROR
+                check_error
             elif [ "$app" = "node" ];then
-                deploy_software_use_snap_2flag
+                echo "--> --> running command 'sudo snap install $app --edge --classic'"
+                sudo snap install $app --edge --classic 1>> $DIRECTORY_LOG/$FILE_NULL 2>> $DIRECTORY_LOG/$FILE_ERROR
+                check_error
             else
-                echo "---> RUNNING COMMAND: $GREEN sudo snap install $app $END_COLOR"
-                sudo snap install $app 1>> $DIRECTORY_LOG/$FILE_OK 2>> $DIRECTORY_LOG/$FILE_ERROR
-                check_exit_code_status
+                echo "--> --> running command 'sudo snap install $app'"
+                sudo snap install $app 1>> $DIRECTORY_LOG/$FILE_NULL 2>> $DIRECTORY_LOG/$FILE_ERROR
+                check_error
             fi    
         fi
     done
 }
 
-deploy_software_use_snap_1flag () {
-    echo "---> RUNNING COMMAND: $GREEN sudo snap install $app --classic $END_COLOR"
-    sudo snap install $app --classic 1>> $DIRECTORY_LOG/$FILE_OK 2>> $DIRECTORY_LOG/$FILE_ERROR
-    check_exit_code_status
-}
-
-deploy_software_use_snap_2flag () {
-    echo "---> RUNNING COMMAND: $GREEN sudo snap install $app --edge --classic $END_COLOR"
-    sudo snap install $app --edge --classic 1>> $DIRECTORY_LOG/$FILE_OK 2>> $DIRECTORY_LOG/$FILE_ERROR
-    check_exit_code_status
-}
-
 deploy_software_use_flathub () {
     apps='
-        com.brave.Browser
+        com.google.Chrome
+        com.obsproject.Studio
     '
 
     sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
     for app in $apps; do
-        echo "---> CHECKING $GREEN $app $END_COLOR EXISTS ON THE SYSTEM OR NOT?"
+        echo "--> checking '$app' exists on the system or not?"
 
         if flatpak list | grep -q "$app"; then
-            echo "$GREEN $app APPLICATION HAS BEEN INSTALLED.$END_COLOR"
+            echo "--> --> '$app' application has been installed."
         else
-            echo "$YELLOW $app APPLICATION IS NOT INSTALLED.$END_COLOR"
-            echo "---> RUNNING COMMAND: $GREEN sudo flatpak install flathub -y $app $END_COLOR"
-            sudo flatpak install flathub -y $app 1>> $DIRECTORY_LOG/$FILE_OK 2>> $DIRECTORY_LOG/$FILE_ERROR
-            check_exit_code_status
+            echo "--> --> '$app' application is not installed"
+            echo "--> --> running command 'sudo flatpak install flathub -y $app'"
+            sudo flatpak install flathub -y $app 1>> $DIRECTORY_LOG/$FILE_NULL 2>> $DIRECTORY_LOG/$FILE_ERROR
+            check_error
         fi
     done
 }
 
 delete_software_default_use_apt () {
-    # trien khai doi tuong de thu thi xoa app mac dinh tren nhieu ban phan phoi
     apps='
         libreoffice
         aisleriot
@@ -239,72 +172,65 @@ delete_software_default_use_apt () {
         gnome-calendar
     '
 
-    echo "---> DELETING SOFTWARES DEFAULT...."
+    echo " --> deleting softwares default...."
 
     for app in $apps; do
-        echo "---> RUNNING COMMAND: $GREEN sudo apt purge -y $app* $PACKAGE_NAME $END_COLOR"
-        sudo apt purge -y $app* 1>> $FILE_OK 2>> $FILE_ERROR
-        check_exit_code_status
+        echo "--> --> running command: 'sudo apt purge -y $app* $PACKAGE_NAME" # ???? $PACKAGE_NAME meaning
+        sudo apt purge -y $app* 1>> $FILE_NULL 2>> $FILE_ERROR
+        check_error
 
-        echo "---> CHECKING & UPDATING SYSTEM AFTER DELETED $GREEN $app $END_COLOR...."
-        sudo apt autoremove -y 1>> $FILE_OK 2>> $FILE_ERROR
-        check_exit_code_status
+        echo "--> --> checking & updating system after deleted '$app'...."
+        sudo apt autoremove -y 1>> $FILE_NULL 2>> $FILE_ERROR
+        check_error
     done
-
-    echo "---> DELETED SOFTWARES DEFAULT"
 }
 
-###############################################################################
-#### DEPLOYMENT
-echo "$BLUE THIS SCRIPT DESIGNED BY Nguyen Nguyen | CODED BY ChatGPT & Nguyen Nguyen $END_COLOR"
-
+#### DEPLOYMENT ####
 # enter password to automatically install
-echo -n "ENTER YOUR PASSWORD: "
+echo -n "--> enter your password: "
 stty -echo
-read INPUT_PASS
 stty echo
-echo    # newline
+echo # newline
 
 # checking user can execute commands with sudo permission
-echo "---> CHECKING $GREEN$(whoami)$END_COLOR USER CAN EXECUTE COMMANDS WITH SUDO PERMISSION...."
+echo "--> checking '$(whoami)' user can execute commands with sudo permission...."
 
-sudo -l 1>> $FILE_OK 2>> $FILE_ERROR
+sudo -l 1>> $FILE_NULL 2>> $FILE_ERROR # ????
 
 if [ $? -eq 0 ]; then
-    echo "$GREEN $(whoami) USER CAN RUN COMMANDS ON THIS SYSTEM WITH SUDO PERMISSION.$END_COLOR"
+    echo "--> --> '$(whoami)' user can run commands on this system with sudo permission."
 else    
-    echo "$RED $(whoami) USER CANNOT RUN COMMANDS ON THIS SYSTEM WITH SUDO PERMISSION$END_COLOR"
-    echo "---> REFER TO THE FOLLOWING INSTRUCTIONS TO ADD $GREEN $USER $END_COLOR USER INTO $FILE_SUDO FILE."
-    echo "---> RUN COMMAND $GREEN su root $END_COLOR AND ENTER PASSWORD"
-    echo "---> NEXT, RUN COMMAND $GREEN echo '$USER     ALL=(ALL:ALL) ALL' >> $FILE_SUDO $END_COLOR"
-    echo "---> END, RUN COMMAND $GREEN exit $END_COLOR TO EXIT ROOT SESSION"
-    echo "---> AFTER ALL THAT, PLEASE RE-RUN $GREEN $SCRIPT_NAME $END_COLOR FILE"
+    echo "--> --> '$(whoami)' user can't run commands on this system with sudo permission"
+    echo "--> --> refer to the following instructions to add '$USER' user into '$FILE_SUDO' file."
+    echo "--> --> run command 'su root' and enter password"
+    echo "--> --> next, run command 'echo $USER     ALL=(ALL:ALL) ALL >> $FILE_SUDO'"
+    echo "--> --> end, run command 'exit' to exit root sesstion"
+    echo "--> --> after all that, please re-run script file"
 fi
 
 # create file to write log ok, log error message during installation
 sudo mkdir -p $DIRECTORY_LOG
-sudo touch $DIRECTORY_LOG/$FILE_OK $DIRECTORY_LOG/$FILE_ERROR
+sudo touch $DIRECTORY_LOG/$FILE_ERROR
 sudo chown -R $USER:$GROUP $DIRECTORY_LOG
 
 # create new directory inside user directory (option)
-echo "---> CREATING $GREEN $DIRECTORY $END_COLOR DIRECTORY INSIDE PATH /home/$USER...."
+echo "--> creating '$DIRECTORY' directory inside path '/home/$USER'...."
 sudo mkdir -p /home/$USER/$DIRECTORY
-echo "$GREEN CREATED $DIRECTORY DIRECTORY INSIDE /home/$USER $END_COLOR."
 
 # checking network
-echo "---> CHECKING NETWORK: PING TO $GREEN $PING $END_COLOR...."
+echo "--> checking network: ping to '$PING'...."
 
-if ping -c 1 "$PING" 1>> $DIRECTORY_LOG/$FILE_OK; then
+if ping -c 1 "$PING" 1>> $DIRECTORY_LOG/$FILE_NULL; then
     sleep 1
-    echo "$GREEN NETWORK CONNECTION STATUS: OK!$END_COLOR"
+    echo "--> --> network connection status: ok!"
 else
-    echo "$RED NETWORK CONNECTION STATUS: NG!$END_COLOR"
-    echo "$RED PLEASE CHECK NETWORK ON THIS SYSTEM!$END_COLOR"
+    echo "--> --> network connection status: ng!"
+    echo "--> --> please check network on this system!"
     exit 1
 fi
 
 # check distrobution info to select package management to deploy
-echo "---> CHECKING DISTRO INFO FROM $GREEN $FILE_RELEASE_INFO $END_COLOR FILE TO PREPARE DEPLOY...."
+echo "--> checking distro info from '$FILE_RELEASE_INFO' file to prepare deploy...."
 
 distros='
     "Ubuntu"
@@ -314,24 +240,17 @@ distros='
 
 for distro in $distros; do
     if grep -q -e "$distro" "$FILE_RELEASE_INFO"; then
+        echo "--> --> distro on this system is: '$distro'"
         delete_software_default_use_apt
         deploy_software_use_apt
         deploy_software_use_snap
-        # deploy_software_use_flathub
-        echo "---> DEPLOY PROCESS IS COMPLETED."
-        echo "---> IF YOU NEED CHECK LOG TO WATCH ALL INSTALLED PROCESS."
-        echo "---> PLEASE RUN COMMANDS: $GREEN cat $DIRECTORY_LOG/$FILE_ERROR $END_COLOR TO CHECK ERROR LOG."
-        echo "---> OR RUN COMMANDS: $GREEN cat $DIRECTORY_LOG/$FILE_OK $END_COLOR TO CHECK OK LOG."
-        echo "$BLUE THIS SCRIPT DESIGNED BY Nguyen Nguyen | CODED BY ChatGPT & Nguyen Nguyen $END_COLOR"
+        deploy_software_use_flathub
+        echo "--> deploy process is completed."
+        echo "--> please run command 'cat $DIRECTORY_LOG/$FILE_ERROR' to check error log."
+        echo "--> or run command 'cat $DIRECTORY_LOG/$FILE_NULL' to check good log."
         break
     else
-        echo "$RED NOT FOUND $distro INSIDE $FILE_RELEASE_INFO $END_COLOR"
-        echo "$BLUE THIS SCRIPT DESIGNED BY Nguyen Nguyen | CODED BY ChatGPT & Nguyen Nguyen $END_COLOR"
-        # comment tam de test script
-        # exit 1
+        echo "--> --> not found '$distro' inside '$FILE_RELEASE_INFO'"
+        exit 1
     fi
 done
-
-# # MAKE UBUNTU FASTER
-# # remove language-related ign from apt update
-# echo 'Acquire::Languages "none";' >> /etc/apt/apt.conf.d/00aptitude
