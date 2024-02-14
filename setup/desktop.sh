@@ -1,20 +1,15 @@
 #!/bin/bash
-# * CAC PHAN MEM NAY PHAI DUOC CAI TRUOC TIEN
-#### APT
-    # python3
-    # net-tools
-    # openssh-server
-    # xz-utils
-    # at
-    # sshpass
-    # python3-pip
-    # bat
 
-#### SET ENVIRONMENT VARIABLE ####
-
+# SET ENVIRONMENT VARIABLE
 # user & group
 USER="linux"
 GROUP="linux"
+
+# color
+RED='\e[31m'
+GREEN='\e[32m'
+YELLOW='\e[33m'
+END_COLOR='\e[0m'
 
 # file & directory
 DIRECTORY=vnn1489
@@ -24,17 +19,14 @@ FILE_RELEASE_INFO=/etc/os-release
 FILE_ERROR=error.log
 FILE_SUDO=/etc/sudoers
 
-# networking
-PING="8.8.8.8"
-
-#### DEFINED FUNCTION ####
+# DEFINED FUNCTION
 check_error() {
     if [ $? -ne 0 ]; then
-        echo "--> --> please run command 'cat $DIRECTORY_LOG/$FILE_ERROR' to check error log!"
+        echo "--> $RED run command 'cat $DIRECTORY_LOG/$FILE_ERROR' to check error log! $END_COLOR"
     fi
 }
 
-check_and_update_after_deployed_app_use_apt() {
+update_app_apt() {
     options='
         upgrade
         dist-upgrade
@@ -42,10 +34,8 @@ check_and_update_after_deployed_app_use_apt() {
         autoremove
     '
 
-    echo "--> --> --> checking & updating after deployed software use apt package management."
-
     for option in $options; do
-        sudo -S apt $option -y 1>> $DIRECTORY_LOG/$FILE_NULL 2>> $DIRECTORY_LOG/$FILE_ERROR
+        sudo -S apt $option -y 1>> $FILE_NULL 2>> $DIRECTORY_LOG/$FILE_ERROR
         check_error
     done
 
@@ -57,12 +47,12 @@ check_and_update_after_deployed_app_use_apt() {
     done
 }
 
-deploy_software_use_apt () {
-    echo "--> deploying with apt package management"
-    echo "--> --> running command 'sudo apt update -y'"
-    sudo apt update -y 1>> $DIRECTORY_LOG/$FILE_NULL 2>> $DIRECTORY_LOG/$FILE_ERROR
+install_app_apt () {
+    sudo apt update -y 1>> $FILE_NULL 2>> $DIRECTORY_LOG/$FILE_ERROR
     check_error
-    check_and_update_after_deployed_app_use_apt
+    update_app_apt
+
+    # APT: python3, net-tools, openssh-server, xz-utils, at, sshpass, python3-pip, bat
 
     apps='
         curl
@@ -78,21 +68,18 @@ deploy_software_use_apt () {
     '
 
     for app in $apps; do
-        echo "--> --> checking '$app' exists on the system or not?"
-
         if apt list --installed | grep -q "^$app/"; then
-            echo "--> --> --> '$app' application has been installed."
+            return
         else
-            echo "--> --> --> '$app' application is not installed."
-            echo "--> --> --> running command 'sudo apt install -y $app'"
-            sudo apt install -y $app 1>> $DIRECTORY_LOG/$FILE_NULL 2>> $DIRECTORY_LOG/$FILE_ERROR            
+            echo "--> installing $app ...."
+            sudo apt install -y $app 1>> $FILE_NULL 2>> $DIRECTORY_LOG/$FILE_ERROR            
             check_error
-            check_and_update_after_deployed_app_use_apt
+            update_app_apt
         fi
     done
 }
 
-deploy_software_use_snap () {
+install_app_snap () {
    apps='
         brave
         spotify
@@ -109,31 +96,27 @@ deploy_software_use_snap () {
     '
 
     for app in $apps; do
-        echo "--> checking '$app' exists on the system or not?"
-
         if snap list --all | grep -q "$app"; then
-            echo "--> --> '$app' application has been installed."
+            echo "-->'$app' application has been installed."
         else
-            echo "--> --> '$app' application is not installed"
-            
             if [ "$app" = "code" ]; then
-                echo "--> --> running command 'sudo snap install $app --classic'"
-                sudo snap install $app --classic 1>> $DIRECTORY_LOG/$FILE_NULL 2>> $DIRECTORY_LOG/$FILE_ERROR
+                echo "--> installing $app ...."
+                sudo snap install $app --classic 1>> $FILE_NULL 2>> $DIRECTORY_LOG/$FILE_ERROR
                 check_error
             elif [ "$app" = "node" ];then
-                echo "--> --> running command 'sudo snap install $app --edge --classic'"
-                sudo snap install $app --edge --classic 1>> $DIRECTORY_LOG/$FILE_NULL 2>> $DIRECTORY_LOG/$FILE_ERROR
+                echo "--> installing $app ...."
+                sudo snap install $app --edge --classic 1>> $FILE_NULL 2>> $DIRECTORY_LOG/$FILE_ERROR
                 check_error
             else
-                echo "--> --> running command 'sudo snap install $app'"
-                sudo snap install $app 1>> $DIRECTORY_LOG/$FILE_NULL 2>> $DIRECTORY_LOG/$FILE_ERROR
+                echo "--> installing $app ...."
+                sudo snap install $app 1>> $FILE_NULL 2>> $DIRECTORY_LOG/$FILE_ERROR
                 check_error
             fi    
         fi
     done
 }
 
-deploy_software_use_flathub () {
+install_app_flathub () {
     apps='
         com.google.Chrome
         com.obsproject.Studio
@@ -142,20 +125,17 @@ deploy_software_use_flathub () {
     sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
     for app in $apps; do
-        echo "--> checking '$app' exists on the system or not?"
-
         if flatpak list | grep -q "$app"; then
-            echo "--> --> '$app' application has been installed."
+            echo "--> '$app' application has been installed."
         else
-            echo "--> --> '$app' application is not installed"
-            echo "--> --> running command 'sudo flatpak install flathub -y $app'"
-            sudo flatpak install flathub -y $app 1>> $DIRECTORY_LOG/$FILE_NULL 2>> $DIRECTORY_LOG/$FILE_ERROR
+            echo "--> installing $app ...."
+            sudo flatpak install flathub -y $app 1>> $FILE_NULL 2>> $DIRECTORY_LOG/$FILE_ERROR
             check_error
         fi
     done
 }
 
-delete_software_default_use_apt () {
+delete_app_apt_default () {
     apps='
         libreoffice
         aisleriot
@@ -172,40 +152,30 @@ delete_software_default_use_apt () {
         gnome-calendar
     '
 
-    echo " --> deleting softwares default...."
+    echo "--> deleting apps default...."
 
     for app in $apps; do
-        echo "--> --> running command: 'sudo apt purge -y $app* $PACKAGE_NAME" # ???? $PACKAGE_NAME meaning
         sudo apt purge -y $app* 1>> $FILE_NULL 2>> $FILE_ERROR
         check_error
-
-        echo "--> --> checking & updating system after deleted '$app'...."
         sudo apt autoremove -y 1>> $FILE_NULL 2>> $FILE_ERROR
         check_error
     done
 }
 
-#### DEPLOYMENT ####
+# DEPLOYMENT
 # enter password to automatically install
-echo -n "--> enter your password: "
 stty -echo
 stty echo
 echo # newline
 
 # checking user can execute commands with sudo permission
-echo "--> checking '$(whoami)' user can execute commands with sudo permission...."
-
 sudo -l 1>> $FILE_NULL 2>> $FILE_ERROR # ????
 
 if [ $? -eq 0 ]; then
-    echo "--> --> '$(whoami)' user can run commands on this system with sudo permission."
-else    
-    echo "--> --> '$(whoami)' user can't run commands on this system with sudo permission"
-    echo "--> --> refer to the following instructions to add '$USER' user into '$FILE_SUDO' file."
-    echo "--> --> run command 'su root' and enter password"
-    echo "--> --> next, run command 'echo $USER     ALL=(ALL:ALL) ALL >> $FILE_SUDO'"
-    echo "--> --> end, run command 'exit' to exit root sesstion"
-    echo "--> --> after all that, please re-run script file"
+    echo "--> $YELLOW run command 'su root' $END_COLOR"
+    echo "--> $YELLOW next, run command 'echo $USER     ALL=(ALL:ALL) ALL >> $FILE_SUDO' $END_COLOR"
+    echo "--> $YELLOW end, run command 'exit' to exit root sesstion $END_COLOR"
+    echo "--> $YELLOW after all that, re-run script file $END_COLOR"
 fi
 
 # create file to write log ok, log error message during installation
@@ -214,24 +184,9 @@ sudo touch $DIRECTORY_LOG/$FILE_ERROR
 sudo chown -R $USER:$GROUP $DIRECTORY_LOG
 
 # create new directory inside user directory (option)
-echo "--> creating '$DIRECTORY' directory inside path '/home/$USER'...."
 sudo mkdir -p /home/$USER/$DIRECTORY
 
-# checking network
-echo "--> checking network: ping to '$PING'...."
-
-if ping -c 1 "$PING" 1>> $DIRECTORY_LOG/$FILE_NULL; then
-    sleep 1
-    echo "--> --> network connection status: ok!"
-else
-    echo "--> --> network connection status: ng!"
-    echo "--> --> please check network on this system!"
-    exit 1
-fi
-
-# check distrobution info to select package management to deploy
-echo "--> checking distro info from '$FILE_RELEASE_INFO' file to prepare deploy...."
-
+# check distrobution & install
 distros='
     "Ubuntu"
     "Pop"
@@ -240,17 +195,14 @@ distros='
 
 for distro in $distros; do
     if grep -q -e "$distro" "$FILE_RELEASE_INFO"; then
-        echo "--> --> distro on this system is: '$distro'"
-        delete_software_default_use_apt
-        deploy_software_use_apt
-        deploy_software_use_snap
-        deploy_software_use_flathub
-        echo "--> deploy process is completed."
-        echo "--> please run command 'cat $DIRECTORY_LOG/$FILE_ERROR' to check error log."
-        echo "--> or run command 'cat $DIRECTORY_LOG/$FILE_NULL' to check good log."
+        delete_app_apt_default
+        install_app_apt
+        install_app_snap
+        install_app_flathub
+        echo "--> INSTALLED. run command $GREEN cat $DIRECTORY_LOG/$FILE_ERROR $END_COLOR to check error log."
         break
     else
-        echo "--> --> not found '$distro' inside '$FILE_RELEASE_INFO'"
+        echo "--> $RED not found '$distro' inside '$FILE_RELEASE_INFO' $END_COLOR"
         exit 1
     fi
 done
