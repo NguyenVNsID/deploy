@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#### SET ENVIRONMENT VARIABLE ####
+############# SET ENVIRONMENT VARIABLE
 # user & group
 USER="linux"
 GROUP="linux"
@@ -13,7 +13,7 @@ FILE_SUDO=/etc/sudoers
 DIRECTORY_LOG=/var/opt/log
 FILE_RELEASE_INFO=/etc/os-release
 
-#### DEFINE FUNCTION ####
+############# DEFINE FUNCTION
 config_git() {
     GIT_CONFIG=~/.gitconfig
 
@@ -195,7 +195,7 @@ delete_app_apt_default () {
     done
 }
 
-#### DEPLOYMENT ####
+############# DEPLOYMENT
 # checking user can execute commands with sudo permission
 
 read -p "Enter your password: " password
@@ -243,7 +243,7 @@ for distro in $distros; do
     fi
 done
 
-#### CONFIGURE ####
+############# CONFIGURE
 # git
 config_git
 
