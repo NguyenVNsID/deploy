@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# SET ENVIRONMENT VARIABLE
+#### SET ENVIRONMENT VARIABLE ####
 # user & group
 USER="linux"
 GROUP="linux"
@@ -13,10 +13,20 @@ FILE_SUDO=/etc/sudoers
 DIRECTORY_LOG=/var/opt/log
 FILE_RELEASE_INFO=/etc/os-release
 
-# DEFINED FUNCTION
+#### DEFINED FUNCTION ####
 check_error() {
     if [ $? -ne 0 ]; then
         echo "-------> ERROR: run command to check: cat $DIRECTORY_LOG/$FILE_ERROR"
+    fi
+}
+
+check_ssh_key() {
+    SSH_KEY=~/.ssh/id_rsa
+    
+    if [ -f $SSH_KEY ]; then
+        echo "---> add content of 'id_rsa.pub' to github, etc."
+    else
+        ssh-keygen -t rsa -N "" -f "$SSH_KEY" -q 1>> $DIRECTORY_LOG/$FILE_OK 2>> $FILE_ERROR
     fi
 }
 
@@ -86,7 +96,6 @@ install_app_snap () {
         kcalc
         code
         node
-        termius-app
         arianna
     '
 
@@ -166,7 +175,7 @@ delete_app_apt_default () {
     done
 }
 
-# DEPLOYMENT
+#### DEPLOYMENT ####
 # checking user can execute commands with sudo permission
 
 read -p "Enter your password: " password
@@ -188,8 +197,9 @@ echo "---> run command to view log: tail -f $DIRECTORY_LOG/$FILE_ERROR"
 echo "---> run command to view log: tail -f $DIRECTORY_LOG/$FILE_OK"
 
 # create new directory inside user directory (option)
-sudo mkdir -p /home/$USER/$DIRECTORY
-sudo chown -R $USER:$GROUP /home/$USER/$DIRECTORY
+sudo mkdir -p ~/$USER/$DIRECTORY
+sudo mkdir -p ~/$USER/$DIRECTORY/local-repo
+sudo chown -R $USER: ~/$USER/$DIRECTORY
 
 # check distrobution & install
 distros='
@@ -204,7 +214,7 @@ for distro in $distros; do
         install_app_apt
         install_app_snap
         install_app_flathub
-        echo "---> more manual install: virtual box, docker"
+        echo "---> more manual install: virtual box, docker, termius"
         echo "-------> INSTALLED. check error log, run command: cat $DIRECTORY_LOG/$FILE_ERROR"
         break
     else
@@ -212,3 +222,9 @@ for distro in $distros; do
         exit 1
     fi
 done
+
+#### CONFIGURE ####
+# git
+
+
+# .bashrc
