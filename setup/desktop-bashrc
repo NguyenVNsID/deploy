@@ -1,0 +1,12 @@
+# FUNCTIONS
+make() {
+    local source_file="$1"
+    gcc "$source_file.c" -o "$source_file" -lcs50
+}
+
+# ALIASES
+alias reload='source ~/.bashrc'
+
+alias utc='date -u "+%a %Y%m%d %H:%M (24h) %Z"'
+
+alias commit='git commit -m "`date -u "+%a %Y%m%d %H:%M (24h) %Z"`"'
