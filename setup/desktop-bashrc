@@ -1,3 +1,9 @@
+#### MY CUSTOMIZE BASH ####
+
+# WHERE .bashrc STORED
+# /etc/skel/.bashrc ---> FOR ALL USER
+# /home/UserName/.bashrc ---> FOR EACH SPECIFIC USER
+
 # FUNCTIONS
 make() {
     local source_file="$1"
@@ -5,8 +11,28 @@ make() {
 }
 
 # ALIASES
-alias reload='source ~/.bashrc'
+alias j='sudo'
 
-alias utc='date -u "+%a %Y%m%d %H:%M (24h) %Z"'
+alias f-bat='batcat'
 
-alias commit='git commit -m "`date -u "+%a %Y%m%d %H:%M (24h) %Z"`"'
+alias f-python='python3'
+
+alias f-extract='tar -xvf'
+
+alias f-iphost='hostname -I'
+
+alias f-reload='source ~/.bashrc'
+
+alias f-ipublic='curl icanhazip.com'
+
+alias f-r='sudo systemctl reboot -i'
+
+alias f-s='sudo systemctl suspend -i'
+
+alias f-p='sudo systemctl poweroff -i'
+
+alias f-utc='date -u "+%a %Y%m%d %H:%M (24h) %Z"'
+
+alias f-commit='git commit -m "`date -u "+%a %Y%m%d %H:%M (24h) %Z"`"'
+
+alias f-speedtest='curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python3 -'

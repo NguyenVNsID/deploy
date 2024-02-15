@@ -13,7 +13,27 @@ FILE_SUDO=/etc/sudoers
 DIRECTORY_LOG=/var/opt/log
 FILE_RELEASE_INFO=/etc/os-release
 
-#### DEFINED FUNCTION ####
+#### DEFINE FUNCTION ####
+config_git() {
+    GIT_CONFIG=~/.gitconfig
+
+    config() {
+        git config --global user.name "vnn1489"
+        git config --global user.email "vnn1489@outlook.com"
+        echo "---> config git complete, check with command: cat $GIT_CONFIG"
+    }
+
+    if [ -f $GIT_CONFIG ]; then
+        if cat $GIT_CONFIG | grep -q 'vnn1489@outlook.com'; then
+            echo "---> existed info user"
+        else
+            config
+        fi
+    else
+        config
+    fi
+}
+
 check_error() {
     if [ $? -ne 0 ]; then
         echo "-------> ERROR: run command to check: cat $DIRECTORY_LOG/$FILE_ERROR"
@@ -225,6 +245,13 @@ done
 
 #### CONFIGURE ####
 # git
-
+config_git
 
 # .bashrc
+
+# python
+
+## after setup python, install thefuck
+
+
+
