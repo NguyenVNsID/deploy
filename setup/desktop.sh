@@ -1,5 +1,4 @@
 #!/bin/bash
-
 ############# SET ENVIRONMENT VARIABLE
 # user & group
 USER="linux"
@@ -81,14 +80,16 @@ install_app_apt () {
     # APT: python3, net-tools, openssh-server, xz-utils, at, sshpass, python3-pip, bat
 
     apps='
-        curl
         snap
         flatpak
         gnome-software-plugin-flatpak
         git
-        solaar
         ibus-unikey
         gnome-tweaks
+        wget
+        python3-dev
+        python3-pip
+        python3-setuptools
     '
 
     for app in $apps; do
@@ -104,19 +105,11 @@ install_app_apt () {
 }
 
 install_app_snap () {
-   # flameshot (conflig, use flathub), video-downloader, nmap, 
-   
+   # node
+   # alternatives to flathub: brave, spotify, libreoffice, vlc, ferdium, dbeaver-ce, kcalc, arianna, flameshot (conflig with snap), video-downloader, nmap
    apps='
-        brave
-        spotify
-        libreoffice
-        vlc
-        ferdium
-        dbeaver-ce
-        kcalc
+        curl
         code
-        node
-        arianna
     '
 
     echo "-------> installing apps with snap...."
@@ -144,9 +137,18 @@ install_app_snap () {
 
 install_app_flathub () {
     apps='
+        com.brave.Browser
+        com.spotify.Client
+        org.libreoffice.LibreOffice
+        org.videolan.VLC
+        org.ferdium.Ferdium
+        io.dbeaver.DBeaverCommunity
+        org.kde.kcalc
+        org.kde.arianna
+        org.flameshot.Flameshot
         com.obsproject.Studio
         com.google.Chrome
-        org.flameshot.Flameshot
+        io.github.pwr_solaar.solaar
     '
 
     echo "-------> installing apps with flathub...."
@@ -165,7 +167,7 @@ install_app_flathub () {
 }
 
 delete_app_apt_default () {
-    # libgnome-todo (khong biet day co phai app anh huong toi phan khong co setting khong)
+    # libgnome-todo, gnome-todo (khong biet day co phai app anh huong toi phan khong co setting khong) 
     
     apps='
         rhythmbox
@@ -178,7 +180,6 @@ delete_app_apt_default () {
         gnome-mahjongg
         gnome-mines
         gnome-sudoku
-        gnome-todo
         remmina
         gnome-calculator
         gnome-calendar
@@ -217,9 +218,9 @@ echo "---> run command to view log: tail -f $DIRECTORY_LOG/$FILE_ERROR"
 echo "---> run command to view log: tail -f $DIRECTORY_LOG/$FILE_OK"
 
 # create new directory inside user directory (option)
-sudo mkdir -p ~/$USER/$DIRECTORY
-sudo mkdir -p ~/$USER/$DIRECTORY/local-repo
-sudo chown -R $USER: ~/$USER/$DIRECTORY
+sudo mkdir -p ~/$DIRECTORY
+sudo mkdir -p ~/$DIRECTORY/local-repo
+sudo chown -R $USER: ~/$DIRECTORY
 
 # check distrobution & install
 distros='
@@ -234,7 +235,6 @@ for distro in $distros; do
         install_app_apt
         install_app_snap
         install_app_flathub
-        echo "---> more manual install: virtual box, docker, termius"
         echo "-------> INSTALLED. check error log, run command: cat $DIRECTORY_LOG/$FILE_ERROR"
         break
     else
@@ -244,14 +244,20 @@ for distro in $distros; do
 done
 
 ############# CONFIGURE
+echo "---> configing for apps...."
+
 # git
+echo "---> configing git...."
 config_git
 
-# .bashrc
-
 # python
+echo "---> installing apps with python...."
+sudo pip3 install thefuck --user 1>> $DIRECTORY_LOG/$FILE_OK 2>> $FILE_ERROR
+sudo pip3 install thefuck --upgrade 1>> $DIRECTORY_LOG/$FILE_OK 2>> $FILE_ERROR
 
-## after setup python, install thefuck
+# .bashrc
+echo "---> configing .bashrc file...."
+wget https://github.com/vnn1489/deploy/raw/main/setup/desktop-bashrc -P ~/$DIRECTORY 1>> $DIRECTORY_LOG/$FILE_OK 2>> $FILE_ERROR
+cd ~/$DIRECTORY && cat desktop-bashrc >> ~/.bashrc
 
-
-
+echo "---> install apps manually: virtual box, docker, termius"
