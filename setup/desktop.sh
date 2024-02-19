@@ -235,7 +235,6 @@ for distro in $distros; do
         install_app_apt
         install_app_snap
         install_app_flathub
-        echo "-------> INSTALLED. check error log, run command: cat $DIRECTORY_LOG/$FILE_ERROR"
         break
     else
         echo "---> not found '$distro' inside '$FILE_RELEASE_INFO'"
@@ -261,3 +260,4 @@ wget https://github.com/vnn1489/deploy/raw/main/setup/desktop-bashrc -P ~/$DIREC
 cd ~/$DIRECTORY && cat desktop-bashrc >> ~/.bashrc
 
 echo "---> install apps manually: virtual box, docker, termius"
+echo "-------> INSTALLED. check error log, run command: cat $DIRECTORY_LOG/$FILE_ERROR"
