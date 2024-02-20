@@ -19,11 +19,7 @@ alias f-python='python3'
 
 alias f-extract='tar -xvf'
 
-alias f-iphost='hostname -I'
-
 alias f-reload='source ~/.bashrc'
-
-alias f-ipublic='curl icanhazip.com'
 
 alias f-r='sudo systemctl reboot -i'
 
@@ -35,4 +31,9 @@ alias f-utc='date -u "+%a %Y%m%d %H:%M (24h) %Z"'
 
 alias f-commit='git commit -m "`date -u "+%a %Y%m%d %H:%M (24h) %Z"`"'
 
-alias f-speedtest='curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python3 -'
+
+alias f-n-ports='ss -tuln' ###> SOCKET STATISTICS
+alias f-n-info='nmcli' ###> CONTROLLING NETWORK MANAGER
+alias f-n-iphost='hostname -I'
+alias f-n-ipublic='curl icanhazip.com'
+alias f-n-speedtest='curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python3 -'
