@@ -17,13 +17,14 @@ config_git() {
     GIT_CONFIG=~/.gitconfig
 
     config() {
+
         git config --global user.name "vnn1489"
         git config --global user.email "vnn1489@outlook.com"
         echo "---> config git complete, check with command: cat $GIT_CONFIG"
     }
 
     if [ -f $GIT_CONFIG ]; then
-        if cat $GIT_CONFIG | grep -q 'vnn1489@outlook.com'; then
+        if cat $GIT_CONFIG| grep -q 'vnn1489@outlook.com'; then
             echo "---> existed info user"
         else
             config
@@ -261,5 +262,3 @@ wget https://github.com/vnn1489/deploy/raw/main/setup/desktop-bashrc -P ~/$USER/
 cd ~/$DIRECTORY && cat desktop-bashrc >> ~/.bashrc
 
 echo "---> install apps manually: virtual box, docker, termius"
-
-
