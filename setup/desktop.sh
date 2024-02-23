@@ -261,3 +261,4 @@ cd ~/$DIRECTORY && cat desktop-bashrc >> ~/.bashrc
 
 echo "---> install apps manually: virtual box, docker, termius"
 echo "-------> INSTALLED. check error log, run command: cat $DIRECTORY_LOG/$FILE_ERROR"
+
