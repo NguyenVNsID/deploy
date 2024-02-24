@@ -4,33 +4,35 @@
 # /etc/skel/.bashrc ---> FOR ALL USER
 # /home/UserName/.bashrc ---> FOR EACH SPECIFIC USER
 
-# FUNCTIONS
 make() {
     local source_file="$1"
     gcc "$source_file.c" -o "$source_file" -lcs50
 }
 
-# ALIASES
 alias j='sudo'
-
-alias f-bat='batcat'
-
-alias f-python='python3'
 
 alias f-extract='tar -xvf'
 
 alias f-reload='source ~/.bashrc'
 
-alias f-r='sudo systemctl reboot -i'
-
-alias f-s='sudo systemctl suspend -i'
-
-alias f-p='sudo systemctl poweroff -i'
-
 alias f-utc='date -u "+%a %Y%m%d %H:%M (24h) %Z"'
 
 alias f-commit='git commit -m "`date -u "+%a %Y%m%d %H:%M (24h) %Z"`"'
 
+alias f-ai-c='gh copilot config'
+alias f-ai-e='gh copilot explain'
+alias f-ai-s='gh copilot suggest'
+
+alias f-ai-h='f_ai_h'
+f_ai_h() {
+    local command="$1"
+    gh copilot explain "$command"
+}
+
+alias f-ai-cli=f_ai_cli
+f_ai_cli() {
+    gh copilot explain "$1"
+}
 
 alias f-n-ports='ss -tuln' ###> SOCKET STATISTICS
 alias f-n-info='nmcli' ###> CONTROLLING NETWORK MANAGER

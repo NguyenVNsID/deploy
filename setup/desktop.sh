@@ -110,6 +110,7 @@ install_app_snap () {
    apps='
         curl
         code
+        gh
     '
 
     echo "-------> installing apps with snap...."

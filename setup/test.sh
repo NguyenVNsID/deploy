@@ -6,55 +6,21 @@ GROUP="linux"
 
 # file & directory
 FILE_OK=ok.log
-DIRECTORY=vnn1489
-FILE_ERROR=error.log
-=/etc/
-DIRECTORY_LOG=/var/opt/log
-FILE_RELEASE_INFO=/etc/os-release
 
-#
-    while read -r PACKAGE_NAME; do
-        apt upgrade -y $PACKAGE_NAME 1>> 
-}
-
-{
-...."
-    apt update -y 1>> $DIRECTORY_LOG/$FILE_OK 2>> $DIRECTORY_LOG/$FILE_ERROR
+FILE_ERROR=ERROR.LOG
+=/ETC/    APT UPDATE -Y 1>> $DIRECTORY_LOG/$FILE_OK 2>> $DIRECTORY_LOG/$FILE_ERROR
     check_error
     update_app_apt
 
     # APT: python3, net-tools, openssh-server, 
 
- ss; do
- 
-cho "---> nstalled: $ap
-       ELSE
-            echo "---
-> $DIRECTORY_LOG/$FILE_OK 2>> $DIRECTORY_LOG/$FILE_ERROR            
-            check_error
-_c
-        fi
-    done
-}
 
 
+        install_app_snap
+        install_app_flathub
 
-########### DEPLOYMENT
-ser can execute commands with permission
-
-
-# create file to write log ok, log error message during installation
-mkdir -p $DIRECTORY_LOG && cd $DIRECTORY_LOG
-sudo touch $FILE_ERROR $FILE_OK
-sudo chown -R $USER:$GROUP $DIRECTORY_LOG
-echo "---> run command to view log: tail -f $DIRECTORY_LOG/$FILE_ERROR"
-echo "---> run command to view log: tail -f $DIRECTORY_LOSSH_
-
-# create new directory inside user directory (option)
-sudo mkdir -p ~/$USER/$DIRECTORY
-sudo mkdir -p ~/$USER/$DIRECTORY/local-repo
-sudo chown -R $USER: ~/$USER/$DIRECTORY
-        delete_app_apt_default
+Y
+        DELETE_APP_APT_DEFAULT
         install_app_apt
         install_app_snap
         install_app_flathub
