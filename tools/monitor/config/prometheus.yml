@@ -6,19 +6,19 @@ global:
 scrape_configs:
   - job_name: prometheus
     static_configs:
-      - targets: [10.1.30.91:9090]
+      - targets: [192.168.50.233:9090]
 
   - job_name: node-exporter
     static_configs:
-      - targets: [10.1.30.91:9100]
+      - targets: [192.168.50.233:9100]
 
   - job_name: loki
     static_configs:
-      - targets: [10.1.30.91:3100]
+      - targets: [192.168.50.233:3100]
 
   - job_name: promtail
     static_configs:
-    - targets: [10.1.30.91:9080]
+    - targets: [192.168.50.233:9080]
 
   - job_name: cadvisor
     static_configs:
