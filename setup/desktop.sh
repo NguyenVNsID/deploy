@@ -111,6 +111,8 @@ install_app_snap () {
         curl
         code
         gh
+        notion-snap-reborn
+        raindrop
     '
 
     echo "-------> installing apps with snap...."
@@ -150,6 +152,9 @@ install_app_flathub () {
         com.obsproject.Studio
         com.google.Chrome
         io.github.pwr_solaar.solaar
+        com.github.tchx84.Flatseal
+        org.kde.krita
+        io.github.Figma_Linux.figma_linux
     '
 
     echo "-------> installing apps with flathub...."
