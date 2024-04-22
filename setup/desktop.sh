@@ -113,6 +113,8 @@ install_app_snap () {
         gh
         notion-snap-reborn
         raindrop
+        google-bard
+        penpot-desktop
     '
 
     echo "-------> installing apps with snap...."
