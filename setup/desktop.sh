@@ -111,6 +111,10 @@ install_app_snap () {
         curl
         code
         gh
+        notion-snap-reborn
+        raindrop
+        google-bard
+        penpot-desktop
     '
 
     echo "-------> installing apps with snap...."
@@ -150,6 +154,9 @@ install_app_flathub () {
         com.obsproject.Studio
         com.google.Chrome
         io.github.pwr_solaar.solaar
+        com.github.tchx84.Flatseal
+        org.kde.krita
+        io.github.Figma_Linux.figma_linux
     '
 
     echo "-------> installing apps with flathub...."
@@ -250,16 +257,7 @@ echo "---> configing for apps...."
 echo "---> configing git...."
 config_git
 
-# python
-echo "---> installing apps with python...."
-sudo pip3 install thefuck --user 1>> $DIRECTORY_LOG/$FILE_OK 2>> $FILE_ERROR
-sudo pip3 install thefuck --upgrade 1>> $DIRECTORY_LOG/$FILE_OK 2>> $FILE_ERROR
-
 # .bashrc
 echo "---> configing .bashrc file...."
 wget https://github.com/vnn1489/deploy/raw/main/setup/desktop-bashrc -P ~/$DIRECTORY 1>> $DIRECTORY_LOG/$FILE_OK 2>> $FILE_ERROR
 cd ~/$DIRECTORY && cat desktop-bashrc >> ~/.bashrc
-
-echo "---> install apps manually: virtual box, docker, termius"
-echo "-------> INSTALLED. check error log, run command: cat $DIRECTORY_LOG/$FILE_ERROR"
-

@@ -19,23 +19,6 @@ alias f-utc='date -u "+%a %Y%m%d %H:%M (24h) %Z"'
 
 alias f-commit='git commit -m "`date -u "+%a %Y%m%d %H:%M (24h) %Z"`"'
 
-alias f-ai-c='gh copilot config'
-alias f-ai-e='gh copilot explain'
-alias f-ai-s='gh copilot suggest'
-
-alias f-ai-h='f_ai_h'
-f_ai_h() {
-    local command="$1"
-    gh copilot explain "$command"
-}
-
-alias f-ai-cli=f_ai_cli
-f_ai_cli() {
-    gh copilot explain "$1"
-}
-
-alias f-n-ports='ss -tuln' ###> SOCKET STATISTICS
-alias f-n-info='nmcli' ###> CONTROLLING NETWORK MANAGER
-alias f-n-iphost='hostname -I'
 alias f-n-ipublic='curl icanhazip.com'
+
 alias f-n-speedtest='curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python3 -'
