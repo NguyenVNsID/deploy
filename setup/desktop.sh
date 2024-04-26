@@ -77,7 +77,7 @@ install_app_apt () {
     check_error
     update_app_apt
 
-    # APT: python3, net-tools, openssh-server, xz-utils, at, sshpass, python3-pip, bat
+    # APT: python3, net-tools, openssh-server, xz-utils, at, sshpass, python3-pip, bat, python3-dev, python3-pip, python3-setuptools
 
     apps='
         snap
@@ -87,9 +87,6 @@ install_app_apt () {
         ibus-unikey
         gnome-tweaks
         wget
-        python3-dev
-        python3-pip
-        python3-setuptools
     '
 
     for app in $apps; do
@@ -106,15 +103,12 @@ install_app_apt () {
 
 install_app_snap () {
    # node
-   # alternatives to flathub: brave, spotify, libreoffice, vlc, ferdium, dbeaver-ce, kcalc, arianna, flameshot (conflig with snap), video-downloader, nmap
+   # alternatives to flathub: brave, spotify, libreoffice, vlc, ferdium, dbeaver-ce, kcalc, arianna, flameshot (conflig with snap), video-downloader, nmap, gh, google-bard, penpot-desktop
    apps='
         curl
         code
-        gh
         notion-snap-reborn
         raindrop
-        google-bard
-        penpot-desktop
     '
 
     echo "-------> installing apps with snap...."
@@ -141,21 +135,20 @@ install_app_snap () {
 }
 
 install_app_flathub () {
+
+    # org.kde.krita, com.obsproject.Studio, io.dbeaver.DBeaverCommunity, org.kde.kcalc, 
+
     apps='
         com.brave.Browser
         com.spotify.Client
         org.libreoffice.LibreOffice
         org.videolan.VLC
         org.ferdium.Ferdium
-        io.dbeaver.DBeaverCommunity
-        org.kde.kcalc
         org.kde.arianna
         org.flameshot.Flameshot
-        com.obsproject.Studio
         com.google.Chrome
         io.github.pwr_solaar.solaar
         com.github.tchx84.Flatseal
-        org.kde.krita
         io.github.Figma_Linux.figma_linux
     '
 
@@ -233,13 +226,11 @@ sudo chown -R $USER: ~/$DIRECTORY
 # check distrobution & install
 distros='
     "Ubuntu"
-    "Pop"
-    "Lubuntu"
 '
 
 for distro in $distros; do
     if grep -q -e "$distro" "$FILE_RELEASE_INFO"; then
-        delete_app_apt_default
+        # delete_app_apt_default
         install_app_apt
         install_app_snap
         install_app_flathub
