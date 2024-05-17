@@ -102,13 +102,11 @@ install_app_apt () {
 }
 
 install_app_snap () {
-   # node
+   # node notion-snap-reborn raindrop
    # alternatives to flathub: brave, spotify, libreoffice, vlc, ferdium, dbeaver-ce, kcalc, arianna, flameshot (conflig with snap), video-downloader, nmap, gh, google-bard, penpot-desktop
    apps='
         curl
         code
-        notion-snap-reborn
-        raindrop
     '
 
     echo "-------> installing apps with snap...."
