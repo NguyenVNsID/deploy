@@ -119,6 +119,7 @@ install_app_flathub () {
         com.github.tchx84.Flatseal
         io.github.Figma_Linux.figma_linux
         com.visualstudio.code
+        com.github.hluk.copyq
     '
 
     echo "-------> installing apps with flathub...."
