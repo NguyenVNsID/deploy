@@ -1,0 +1,109 @@
+Name: Brave Browser
+Install: Yes
+IdFlatpak: com.brave.Browser
+IdSnap: brave
+Prioritize: IdFlatpak
+
+Name: Discord
+Install: Yes
+IdFlatpak: com.discordapp.Discord
+IdSnap: discord
+Prioritize: IdFlatpak
+
+Name: Flatseal
+Install: Yes
+IdFlatpak: com.github.tchx84.Flatseal
+IdSnap: NULL
+Prioritize: IdFlatpak
+
+Name: Google Chrome
+Install: Yes
+IdFlatpak: com.google.Chrome
+IdSnap: NULL
+Prioritize: IdFlatpak
+
+Name: Spotify
+Install: Yes
+IdFlatpak: com.spotify.Client
+IdSnap: spotify
+Prioritize: IdFlatpak
+
+Name: Figma
+Install: Yes
+IdFlatpak: io.github.Figma_Linux.figma_linux
+IdSnap: figma-linux
+Prioritize: IdFlatpak
+
+Name: Ferdium
+Install: Yes
+IdFlatpak: org.ferdium.Ferdium
+IdSnap: ferdium
+Prioritize: IdFlatpak
+
+Name: Flameshot
+Install: Yes
+IdFlatpak: org.flameshot.Flameshot
+IdSnap: flameshot
+Prioritize: IdFlatpak
+
+Name: Arianna
+Install: Yes
+IdFlatpak: org.kde.arianna
+IdSnap: arianna
+Prioritize: IdFlatpak
+
+Name: Libre Office
+Install: Yes
+IdFlatpak: org.libreoffice.LibreOffice
+IdSnap: libreoffice
+Prioritize: IdFlatpak
+
+Name: VLC
+IdFlatpak: org.videolan.VLC
+IdSnap: vlc
+Prioritize: IdFlatpak
+
+Name: VS Code
+IdFlatpak: ????
+IdSnap: code
+  - Flag: --classic
+Prioritize: ????
+
+Name: curl
+IdFlatpak: ????
+IdSnap: curl
+Prioritize: ????
+
+
+Name: Journey
+IdFlatpak: ????
+IdSnap: journey
+Prioritize: ????
+
+Name: Notion
+IdFlatpak: ????
+IdSnap: notion-snap-reborn
+Prioritize: ????
+
+Name: Raindrop
+IdFlatpak: ????
+IdSnap: raindrop
+Prioritize: ????
+
+Name: 
+IdFlatpak: 
+IdSnap: 
+Prioritize: 
+
+Name: 
+IdFlatpak: 
+IdSnap: 
+Prioritize: 
+
+Name: 
+IdFlatpak: 
+IdSnap: 
+Prioritize: 
+
+
+
