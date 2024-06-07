@@ -69,7 +69,7 @@ update_app_apt() {
 }
 
 install_app_apt () {
-    echo "-------> installing apps with apt...."
+    echo "---> installing apps with apt...."
     sudo apt update -y 1>> $DIRECTORY_LOG/$FILE_OK 2>> $DIRECTORY_LOG/$FILE_ERROR
     update_app_apt
     
@@ -84,9 +84,9 @@ install_app_apt () {
 
     for app in $apps; do
         if apt list --installed | grep -q "^$app/"; then
-            echo "---> installed: $app"
+            echo "-------> installed: $app"
         else
-            echo "---> installing $app...."
+            echo "-------> installing $app...."
             sudo apt install -y $app 1>> $DIRECTORY_LOG/$FILE_OK 2>> $DIRECTORY_LOG/$FILE_ERROR            
             check_error
             update_app_apt
@@ -99,13 +99,13 @@ install_app_snap () {
         figma-linux
     '
 
-    echo "-------> installing apps with snap...."
+    echo "---> installing apps with snap...."
 
     for app in $apps; do
         if snap list --all | grep -q "$app"; then
-            echo "---> installed: $app"
+            echo "-------> installed: $app"
         else
-            echo "---> installing $app...."
+            echo "-------> installing $app...."
             sudo snap install $app 1>> $DIRECTORY_LOG/$FILE_OK 2>> $DIRECTORY_LOG/$FILE_ERROR
             check_error   
         fi
@@ -125,15 +125,15 @@ install_app_flathub () {
         com.visualstudio.code
     '
 
-    echo "-------> installing apps with flathub...."
+    echo "---> installing apps with flathub...."
 
     sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
     for app in $apps; do
         if flatpak list | grep -q "$app"; then
-            echo "---> installed: $app"
+            echo "-------> installed: $app"
         else
-            echo "---> installing $app...."
+            echo "-------> installing $app...."
             sudo flatpak install flathub -y $app 1>> $DIRECTORY_LOG/$FILE_OK 2>> $DIRECTORY_LOG/$FILE_ERROR
             check_error
         fi
@@ -158,11 +158,12 @@ install_app_snap
 install_app_flathub
 
 ############# CONFIGURE
+echo "---> confige for apps"
 # git
-echo "---> configing git...."
+echo "-------> configing git...."
 config_git
 
 # set bashrc for all users
-echo "---> configing .bashrc file...."
+echo "-------> configing .bashrc file...."
 wget https://github.com/vnn1489/deploy/raw/main/setup/desktop-bashrc -P /tmp 1>> $DIRECTORY_LOG/$FILE_OK 2>> $FILE_ERROR
 sudo bash -c 'cat /tmp/desktop-bashrc >> /etc/bash.bashrc'
