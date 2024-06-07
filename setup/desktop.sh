@@ -6,11 +6,8 @@ GROUP="linux"
 
 # file & directory
 FILE_OK=ok.log
-DIRECTORY=vnn1489
 FILE_ERROR=error.log
-FILE_SUDO=/etc/sudoers
 DIRECTORY_LOG=/var/opt/log
-FILE_RELEASE_INFO=/etc/os-release
 
 ############# DEFINE FUNCTION
 config_git() {
@@ -74,11 +71,8 @@ update_app_apt() {
 install_app_apt () {
     echo "-------> installing apps with apt...."
     sudo apt update -y 1>> $DIRECTORY_LOG/$FILE_OK 2>> $DIRECTORY_LOG/$FILE_ERROR
-    check_error
     update_app_apt
-
-    # APT: python3, net-tools, openssh-server, xz-utils, at, sshpass, python3-pip, bat, python3-dev, python3-pip, python3-setuptools
-
+    
     apps='
         snap
         flatpak
@@ -86,7 +80,6 @@ install_app_apt () {
         git
         ibus-unikey
         gnome-tweaks
-        wget
     '
 
     for app in $apps; do
@@ -102,11 +95,8 @@ install_app_apt () {
 }
 
 install_app_snap () {
-   # node notion-snap-reborn raindrop
-   # alternatives to flathub: brave, spotify, libreoffice, vlc, ferdium, dbeaver-ce, kcalc, arianna, flameshot (conflig with snap), video-downloader, nmap, gh, google-bard, penpot-desktop
    apps='
-        curl
-        code
+        figma-linux
     '
 
     echo "-------> installing apps with snap...."
@@ -115,39 +105,24 @@ install_app_snap () {
         if snap list --all | grep -q "$app"; then
             echo "---> installed: $app"
         else
-            if [ "$app" = "code" ]; then
-                echo "---> installing $app...."
-                sudo snap install $app --classic 1>> $DIRECTORY_LOG/$FILE_OK 2>> $DIRECTORY_LOG/$FILE_ERROR
-                check_error
-            elif [ "$app" = "node" ];then
-                echo "---> installing $app...."
-                sudo snap install $app --edge --classic 1>> $DIRECTORY_LOG/$FILE_OK 2>> $DIRECTORY_LOG/$FILE_ERROR
-                check_error
-            else
-                echo "---> installing $app...."
-                sudo snap install $app 1>> $DIRECTORY_LOG/$FILE_OK 2>> $DIRECTORY_LOG/$FILE_ERROR
-                check_error
-            fi    
+            echo "---> installing $app...."
+            sudo snap install $app 1>> $DIRECTORY_LOG/$FILE_OK 2>> $DIRECTORY_LOG/$FILE_ERROR
+            check_error   
         fi
     done
 }
 
 install_app_flathub () {
-
-    # org.kde.krita, com.obsproject.Studio, io.dbeaver.DBeaverCommunity, org.kde.kcalc, 
-
     apps='
         com.brave.Browser
         com.spotify.Client
         org.libreoffice.LibreOffice
-        org.videolan.VLC
         org.ferdium.Ferdium
         org.kde.arianna
         org.flameshot.Flameshot
         com.google.Chrome
-        io.github.pwr_solaar.solaar
         com.github.tchx84.Flatseal
-        io.github.Figma_Linux.figma_linux
+        com.visualstudio.code
     '
 
     echo "-------> installing apps with flathub...."
@@ -165,88 +140,29 @@ install_app_flathub () {
     done
 }
 
-delete_app_apt_default () {
-    # libgnome-todo, gnome-todo (khong biet day co phai app anh huong toi phan khong co setting khong) 
-    
-    apps='
-        rhythmbox
-        thunderbird
-        libreoffice
-        aisleriot
-        cheese
-        shotwell
-        transmission
-        gnome-mahjongg
-        gnome-mines
-        gnome-sudoku
-        remmina
-        gnome-calculator
-        gnome-calendar
-    '
-
-    echo "-------> deleting apps default...."
-
-    for app in $apps; do
-        echo "---> deleting $app...."
-        sudo apt purge -y $app* 1>> $DIRECTORY_LOG/$FILE_OK 2>> $FILE_ERROR
-        check_error
-        sudo apt autoremove -y 1>> $DIRECTORY_LOG/$FILE_OK 2>> $FILE_ERROR
-        check_error
-    done
-}
-
 ############# DEPLOYMENT
 # checking user can execute commands with sudo permission
-
 read -p "Enter your password: " password
 echo "$password" | sudo -Sl # check user can run with sudo permission
 
-if [ $? -ne 0 ]; then
-    echo "---> run command: su root"
-    echo "---> next, run command: echo '$USER     ALL=(ALL:ALL) ALL' >> $FILE_SUDO"
-    echo "---> end, run command: exit"
-    echo "---> after all that, re-run script file"
-    exit 1
-fi
-
 # create file to write log ok, log error message during installation
-sudo mkdir -p $DIRECTORY_LOG && cd $DIRECTORY_LOG
+sudo mkdir -p $DIRECTORY_LOG
+cd $DIRECTORY_LOG
 sudo touch $FILE_ERROR $FILE_OK
 sudo chown -R $USER:$GROUP $DIRECTORY_LOG
 echo "---> run command to view log: tail -f $DIRECTORY_LOG/$FILE_ERROR"
 echo "---> run command to view log: tail -f $DIRECTORY_LOG/$FILE_OK"
 
-# create new directory inside user directory (option)
-sudo mkdir -p ~/$DIRECTORY
-sudo mkdir -p ~/$DIRECTORY/local-repo
-sudo chown -R $USER: ~/$DIRECTORY
-
-# check distrobution & install
-distros='
-    "Ubuntu"
-'
-
-for distro in $distros; do
-    if grep -q -e "$distro" "$FILE_RELEASE_INFO"; then
-        # delete_app_apt_default
-        install_app_apt
-        install_app_snap
-        install_app_flathub
-        break
-    else
-        echo "---> not found '$distro' inside '$FILE_RELEASE_INFO'"
-        exit 1
-    fi
-done
+install_app_apt
+install_app_snap
+install_app_flathub
 
 ############# CONFIGURE
-echo "---> configing for apps...."
-
 # git
 echo "---> configing git...."
 config_git
 
-# .bashrc
+# set bashrc for all users
 echo "---> configing .bashrc file...."
-wget https://github.com/vnn1489/deploy/raw/main/setup/desktop-bashrc -P ~/$DIRECTORY 1>> $DIRECTORY_LOG/$FILE_OK 2>> $FILE_ERROR
-cd ~/$DIRECTORY && cat desktop-bashrc >> ~/.bashrc
+wget https://github.com/vnn1489/deploy/raw/main/setup/desktop-bashrc -P /tmp 1>> $DIRECTORY_LOG/$FILE_OK 2>> $FILE_ERROR
+sudo bash -c 'cat /tmp/desktop-bashrc >> /etc/bash.bashrc'
