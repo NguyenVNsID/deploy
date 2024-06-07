@@ -64,7 +64,7 @@ IdSnap: vlc
 Prioritize: IdFlatpak
 
 Name: VS Code
-IdFlatpak: ????
+IdFlatpak: com.visualstudio.code
 IdSnap: code
   - Flag: --classic
 Prioritize: ????
@@ -74,21 +74,51 @@ IdFlatpak: ????
 IdSnap: curl
 Prioritize: ????
 
-
 Name: Journey
-IdFlatpak: ????
+IdFlatpak: NULL
 IdSnap: journey
-Prioritize: ????
+Prioritize: IdSnap
 
 Name: Notion
-IdFlatpak: ????
+IdFlatpak: NULL
 IdSnap: notion-snap-reborn
-Prioritize: ????
+Prioritize: IdSnap
 
 Name: Raindrop
-IdFlatpak: ????
+IdFlatpak: NULL
 IdSnap: raindrop
-Prioritize: ????
+Prioritize: IdSnap
+
+Name: Dbeaver
+IdFlatpak: io.dbeaver.DBeaverCommunity
+IdSnap: dbeaver-ce
+Prioritize: IdFlatpak
+
+Name: CopyQ
+IdFlatpak: com.github.hluk.copyq
+IdSnap: NULL
+Prioritize: IdFlatpak
+
+Name: 
+IdFlatpak: com.sudovanilla.penpot-desktop
+IdSnap: penpot-desktop
+Prioritize: 
+
+Name: Node JS
+IdFlatpak: 
+IdSnap: node
+  - Flag: --classic
+Prioritize: 
+
+Name: 
+IdFlatpak: org.kde.krita
+IdSnap: krita
+Prioritize: IdFlatpak
+
+Name: OBS Studio
+IdFlatpak: com.obsproject.Studio
+IdSnap: obs-studio
+Prioritize: IdFlatpak
 
 Name: 
 IdFlatpak: 
@@ -106,4 +136,5 @@ IdSnap:
 Prioritize: 
 
 
-
+apt: python3, net-tools, openssh-server, xz-utils, at, sshpass, python3-pip, bat, python3-dev, python3-pip, python3-setuptools
+snap: nmap
