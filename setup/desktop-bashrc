@@ -1,5 +1,3 @@
-#### MY CUSTOMIZE BASH ####
-
 # WHERE .bashrc STORED
 # /etc/skel/.bashrc ---> FOR ALL USER
 # /home/UserName/.bashrc ---> FOR EACH SPECIFIC USER
