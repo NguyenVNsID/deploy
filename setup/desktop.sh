@@ -1,5 +1,5 @@
 #!/bin/bash
-############# SET ENVIRONMENT VARIABLE
+# SET ENVIRONMENT VARIABLE
 # user & group
 USER="linux"
 GROUP="linux"
@@ -9,18 +9,18 @@ FILE_OK=ok.log
 FILE_ERROR=error.log
 DIRECTORY_LOG=/var/opt/log
 
-############# DEFINE FUNCTION
+# DEFINE FUNCTION
 config_git() {
     GIT_CONFIG=~/.gitconfig
 
     config() {
-        git config --global user.name "vnn1489"
-        git config --global user.email "vnn1489@outlook.com"
+        git config --global user.name "NguyenVNsID"
+        git config --global user.email "NguyenVNsID@hotmail.com"
         echo "---> config git complete, check with command: cat $GIT_CONFIG"
     }
 
     if [ -f $GIT_CONFIG ]; then
-        if cat $GIT_CONFIG | grep -q 'vnn1489@outlook.com'; then
+        if cat $GIT_CONFIG | grep -q 'NguyenVNsID@hotmail.com'; then
             echo "---> existed info user"
         else
             config
@@ -140,7 +140,7 @@ install_app_flathub () {
     done
 }
 
-############# DEPLOYMENT
+# DEPLOYMENT
 # checking user can execute commands with sudo permission
 read -p "Enter your password: " password
 echo "$password" | sudo -Sl # check user can run with sudo permission
@@ -157,7 +157,7 @@ install_app_apt
 install_app_snap
 install_app_flathub
 
-############# CONFIGURE
+# CONFIGURE
 echo "---> confige for apps"
 # git
 echo "-------> configing git...."
@@ -165,5 +165,5 @@ config_git
 
 # set bashrc for all users
 echo "-------> configing .bashrc file...."
-wget https://github.com/vnn1489/deploy/raw/main/setup/desktop-bashrc -P /tmp 1>> $DIRECTORY_LOG/$FILE_OK 2>> $FILE_ERROR
+wget https://github.com/NguyenVNsID/deploy/raw/main/setup/desktop-bashrc -P /tmp 1>> $DIRECTORY_LOG/$FILE_OK 2>> $FILE_ERROR
 sudo bash -c 'cat /tmp/desktop-bashrc >> /etc/bash.bashrc'
