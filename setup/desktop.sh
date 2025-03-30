@@ -14,8 +14,8 @@ config_git() {
     GIT_CONFIG=~/.gitconfig
 
     config() {
-        git config --global user.name "NguyenVNsID"
-        git config --global user.email "NguyenVNsID@hotmail.com"
+        git config --global user.name "nguyenvnco"
+        # git config --global user.email "NguyenVN's email"
         echo "---> config git complete, check with command: cat $GIT_CONFIG"
     }
 
